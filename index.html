@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBA India Daily — Business Intelligence for Future Managers</title>
+<meta name="description" content="India's sharpest daily business intelligence newsletter for MBA students and future managers. Markets, economy, strategy — decoded every morning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+:root {
+  --bg: #040d14;
+  --bg2: #070f1a;
+  --saffron: #FF7A42;
+  --teal: #00C8E0;
+  --gold: #FFD166;
+  --ink: #E8F6F8;
+  --ink-dim: #78AAB8;
+  --ink-faint: #2A4A58;
+  --rule: #0f2535;
+  --green: #44E8A0;
+  --red: #FF4455;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── CANVAS BACKGROUND ── */
+#canvas-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── NOISE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 2px; }
+
+/* ── CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--teal);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(0,200,224,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(4,13,20,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule);
+  padding: 12px 40px;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-mark {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--saffron), var(--teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 18px;
+  color: #040d14;
+  flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(255,122,66,0.35);
+}
+.nav-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.nav-brand-text .n1 { font-family: var(--serif); font-size: 15px; color: var(--ink); }
+.nav-brand-text .n2 { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-dim); }
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.nav-link {
+  font-size: 13px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--ink); }
+.btn-nav {
+  padding: 8px 20px;
+  background: var(--saffron);
+  color: #040d14;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 100px;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.btn-nav:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(255,122,66,0.4);
+}
+
+/* ── HERO ── */
+#hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse, rgba(255,122,66,0.12) 0%, rgba(0,200,224,0.06) 40%, transparent 70%);
+  pointer-events: none;
+  animation: heroGlow 6s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 1;   transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: 28px;
+  padding: 6px 16px;
+  border: 1px solid rgba(255,122,66,0.25);
+  border-radius: 100px;
+  background: rgba(255,122,66,0.05);
+  opacity: 0;
+}
+.hero-eyebrow .pulse-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 3px rgba(68,232,160,0.2);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(68,232,160,0.2)} 50%{opacity:.5;box-shadow:0 0 0 6px rgba(68,232,160,0.05)} }
+
+.hero-headline {
+  font-family: var(--serif);
+  font-size: clamp(42px, 7vw, 92px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -2px;
+  max-width: 900px;
+  margin-bottom: 28px;
+  opacity: 0;
+}
+.hero-headline .line { display: block; overflow: hidden; }
+.hero-headline .word { display: inline-block; }
+.grad-text {
+  background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 40%, var(--teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--ink-dim);
+  max-width: 580px;
+  line-height: 1.65;
+  margin-bottom: 44px;
+  opacity: 0;
+}
+
+.hero-form-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+}
+.hero-form {
+  display: flex;
+  gap: 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 6px 6px 24px;
+  backdrop-filter: blur(12px);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 440px;
+  max-width: 100%;
+}
+.hero-form:focus-within {
+  border-color: rgba(255,122,66,0.5);
+  box-shadow: 0 0 0 4px rgba(255,122,66,0.1);
+}
+.hero-form input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  min-width: 0;
+}
+.hero-form input::placeholder { color: var(--ink-faint); }
+.btn-primary {
+  padding: 11px 24px;
+  background: linear-gradient(135deg, var(--saffron), #ff9a6c);
+  color: #040d14;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+}
+.btn-primary:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 28px rgba(255,122,66,0.5);
+}
+.hero-social-proof {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+}
+.hero-social-proof span { color: var(--green); }
+
+.hero-badges {
+  display: flex;
+  gap: 12px;
+  margin-top: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+}
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  font-size: 12px;
+  color: var(--ink-dim);
+  white-space: nowrap;
+}
+.badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeInUp 1s 2.5s forwards;
+}
+.scroll-indicator span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--saffron), transparent);
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+@keyframes fadeInUp {
+  to { opacity: 1; }
+}
+
+/* ── TICKER ── */
+.ticker-section {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: rgba(255,122,66,0.04);
+  padding: 14px 0;
+  overflow: hidden;
+}
+.ticker-track {
+  display: flex;
+  gap: 0;
+  animation: ticker 40s linear infinite;
+  white-space: nowrap;
+  width: max-content;
+}
+.ticker-track:hover { animation-play-state: paused; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 40px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  letter-spacing: 0.5px;
+}
+.ticker-item .t-icon { color: var(--saffron); font-size: 13px; }
+
+/* ── SECTIONS COMMON ── */
+section {
+  position: relative;
+  z-index: 2;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--teal);
+}
+
+/* ── STATS STRIP ── */
+#stats {
+  padding: 90px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.stat-card {
+  background: var(--bg2);
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,122,66,0.06), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.stat-card:hover::before { opacity: 1; }
+.stat-val {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  letter-spacing: 0.3px;
+  line-height: 1.4;
+}
+
+/* ── ABOUT / WHAT YOU GET ── */
+#about { padding: 100px 0; }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+}
+.newsletter-mockup {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  overflow: hidden;
+  transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+  box-shadow: 40px 40px 80px rgba(0,0,0,0.6), -4px -4px 20px rgba(255,122,66,0.08);
+  transition: transform 0.5s;
+}
+.about-visual:hover .newsletter-mockup {
+  transform: perspective(1000px) rotateY(-2deg) rotateX(1deg);
+}
+.mockup-topbar {
+  background: rgba(255,122,66,0.08);
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mockup-dots {
+  display: flex; gap: 6px;
+}
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.mockup-dot.r { background: #FF5F57; }
+.mockup-dot.y { background: #FFBD2E; }
+.mockup-dot.g { background: #28CA41; }
+.mockup-url {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-dim);
+}
+.mockup-body { padding: 22px 18px; }
+.mockup-headline {
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.25;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.mockup-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.mockup-stat {
+  background: rgba(0,200,224,0.07);
+  border: 1px solid rgba(0,200,224,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+  text-align: center;
+}
+.mockup-stat .mv {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--teal);
+}
+.mockup-stat .ml {
+  font-size: 8.5px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-top: 2px;
+}
+.mockup-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.mockup-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 10px;
+}
+.mockup-card .mc-tag {
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  font-weight: 700;
+  color: var(--saffron);
+  margin-bottom: 5px;
+}
+.mockup-card .mc-text {
+  font-size: 11px;
+  color: var(--ink-dim);
+  line-height: 1.35;
+}
+.mockup-glow {
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(0,200,224,0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.about-content {}
+.about-title {
+  font-family: var(--serif);
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 24px;
+}
+.about-body {
+  font-size: 16px;
+  color: var(--ink-dim);
+  line-height: 1.75;
+  margin-bottom: 36px;
+}
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.feature-item:hover {
+  border-color: rgba(255,122,66,0.3);
+  background: rgba(255,122,66,0.04);
+  transform: translateX(4px);
+}
+.feature-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+.feature-text {}
+.feature-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.feature-text span {
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.4;
+}
+
+/* ── WHAT'S INSIDE ── */
+#inside {
+  padding: 100px 0;
+  background: linear-gradient(180deg, transparent, rgba(255,122,66,0.03) 50%, transparent);
+}
+.inside-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.inside-sub {
+  text-align: center;
+  color: var(--ink-dim);
+  font-size: 16px;
+  max-width: 480px;
+  margin: 0 auto 60px;
+  line-height: 1.6;
+}
+.cards-3d-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card-3d {
+  perspective: 800px;
+  cursor: pointer;
+}
+.card-3d-inner {
+  position: relative;
+  width: 100%;
+  padding-bottom: 120%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.card-3d:hover .card-3d-inner { transform: rotateY(180deg); }
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 22px;
+  border: 1px solid var(--rule);
+}
+.card-front {
+  background: var(--bg2);
+}
+.card-back {
+  background: linear-gradient(135deg, #0a1e2e, #0d2438);
+  transform: rotateY(180deg);
+  justify-content: center;
+  border-color: rgba(0,200,224,0.2);
+}
+.card-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+.card-emoji { font-size: 36px; margin-bottom: 16px; }
+.card-title-3d {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.card-desc {
+  font-size: 13px;
+  color: var(--ink-dim);
+  line-height: 1.55;
+  margin-top: auto;
+}
+.card-back-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--teal);
+  margin-bottom: 14px;
+}
+.card-back-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card-back-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.card-back-list li::before {
+  content: '→';
+  color: var(--saffron);
+  flex-shrink: 0;
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+/* ── HOW IT WORKS ── */
+#how {
+  padding: 100px 0;
+}
+.how-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.how-sub {
+  text-align: center;
+  color: var(--ink-dim);
+  font-size: 16px;
+  max-width: 400px;
+  margin: 0 auto 72px;
+}
+.steps-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+  gap: 40px;
+}
+.steps-wrap::before {
+  content: '';
+  position: absolute;
+  top: 32px; left: 16.67%; right: 16.67%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--saffron) 30%, var(--teal) 70%, transparent);
+  z-index: 0;
+}
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.step-num {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 900;
+  color: #040d14;
+  margin-bottom: 24px;
+  box-shadow: 0 0 0 8px rgba(255,122,66,0.1), 0 12px 32px rgba(255,122,66,0.3);
+  position: relative;
+  z-index: 1;
+}
+.step h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.step p {
+  font-size: 14px;
+  color: var(--ink-dim);
+  line-height: 1.6;
+  max-width: 220px;
+}
+
+/* ── TOPICS ── */
+#topics { padding: 100px 0; }
+.topics-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4vw, 50px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.topics-sub {
+  text-align: center;
+  color: var(--ink-dim);
+  font-size: 16px;
+  margin-bottom: 60px;
+}
+.topics-orbit {
+  position: relative;
+  height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.orbit-center {
+  position: absolute;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--saffron), var(--teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  box-shadow: 0 0 60px rgba(255,122,66,0.3);
+  animation: orbitCenter 4s ease-in-out infinite alternate;
+}
+@keyframes orbitCenter { from{box-shadow:0 0 40px rgba(255,122,66,0.3)} to{box-shadow:0 0 80px rgba(0,200,224,0.4)} }
+.orbit-center-text {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 900;
+  color: #040d14;
+}
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(255,255,255,0.07);
+}
+.orbit-ring-1 { width: 260px; height: 260px; animation: spinRing 25s linear infinite; }
+.orbit-ring-2 { width: 440px; height: 440px; animation: spinRing 40s linear infinite reverse; }
+@keyframes spinRing { to{ transform: rotate(360deg); } }
+.orbit-chip {
+  position: absolute;
+  padding: 8px 16px;
+  background: rgba(4,13,20,0.9);
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  cursor: default;
+  backdrop-filter: blur(10px);
+}
+.orbit-chip:hover {
+  border-color: var(--saffron);
+  background: rgba(255,122,66,0.1);
+  transform: scale(1.05);
+}
+
+/* ── CTA / SUBSCRIBE ── */
+#subscribe {
+  padding: 120px 0;
+}
+.cta-box {
+  background: linear-gradient(135deg, rgba(255,122,66,0.08) 0%, rgba(0,200,224,0.05) 100%);
+  border: 1px solid rgba(255,122,66,0.2);
+  border-radius: 28px;
+  padding: 72px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(255,122,66,0.12), transparent 70%);
+  pointer-events: none;
+}
+.cta-box::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 400px; height: 200px;
+  background: radial-gradient(ellipse, rgba(0,200,224,0.08), transparent 70%);
+  pointer-events: none;
+}
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+.cta-sub {
+  font-size: 17px;
+  color: var(--ink-dim);
+  max-width: 500px;
+  margin: 0 auto 44px;
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+}
+.cta-form-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.cta-form {
+  display: flex;
+  gap: 0;
+  background: rgba(4,13,20,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 7px 7px 7px 28px;
+  backdrop-filter: blur(20px);
+  width: 500px;
+  max-width: 100%;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.cta-form:focus-within {
+  border-color: rgba(255,122,66,0.5);
+  box-shadow: 0 0 0 4px rgba(255,122,66,0.1), 0 20px 60px rgba(255,122,66,0.15);
+}
+.cta-form input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  min-width: 0;
+}
+.cta-form input::placeholder { color: rgba(120,170,184,0.5); }
+.btn-cta {
+  padding: 13px 30px;
+  background: linear-gradient(135deg, var(--saffron), #ff9a6c);
+  color: #040d14;
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: var(--sans);
+}
+.btn-cta:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(255,122,66,0.5);
+}
+
+.cta-features {
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.cta-feat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.cta-feat::before {
+  content: '✓';
+  width: 20px; height: 20px;
+  background: rgba(68,232,160,0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ── SUCCESS STATE ── */
+.success-msg {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 32px;
+  background: rgba(68,232,160,0.08);
+  border: 1px solid rgba(68,232,160,0.3);
+  border-radius: 16px;
+  font-size: 15px;
+  color: var(--green);
+}
+.success-msg .s-icon { font-size: 32px; }
+.success-msg .s-title { font-weight: 700; font-size: 18px; }
+.success-msg .s-text { font-size: 14px; color: var(--ink-dim); }
+
+/* ── SOCIAL PROOF / LINKS ── */
+#links { padding: 80px 0; }
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 36px 28px;
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.link-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.link-card.li::before { background: radial-gradient(circle at 50% 0, rgba(0,119,181,0.15), transparent 70%); }
+.link-card.ig::before { background: radial-gradient(circle at 50% 0, rgba(225,48,108,0.12), transparent 70%); }
+.link-card.web::before { background: radial-gradient(circle at 50% 0, rgba(255,122,66,0.12), transparent 70%); }
+.link-card:hover { transform: translateY(-6px); }
+.link-card:hover::before { opacity: 1; }
+.link-card.li:hover { border-color: rgba(0,119,181,0.5); box-shadow: 0 20px 60px rgba(0,119,181,0.15); }
+.link-card.ig:hover { border-color: rgba(225,48,108,0.4); box-shadow: 0 20px 60px rgba(225,48,108,0.1); }
+.link-card.web:hover { border-color: rgba(255,122,66,0.4); box-shadow: 0 20px 60px rgba(255,122,66,0.15); }
+.link-icon {
+  width: 60px; height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.link-card.li .link-icon { background: rgba(0,119,181,0.12); }
+.link-card.ig .link-icon { background: rgba(225,48,108,0.1); }
+.link-card.web .link-icon { background: rgba(255,122,66,0.1); }
+.link-title { font-family: var(--serif); font-size: 20px; font-weight: 700; }
+.link-desc { font-size: 14px; color: var(--ink-dim); line-height: 1.5; }
+.link-arrow {
+  margin-top: auto;
+  font-size: 13px;
+  color: var(--ink-faint);
+  letter-spacing: 0.5px;
+  font-family: var(--mono);
+  transition: color 0.3s;
+}
+.link-card:hover .link-arrow { color: var(--saffron); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--rule);
+  padding: 48px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.footer-logo {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--saffron), var(--teal));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 16px;
+  color: #040d14;
+}
+.footer-brand-text .fb1 { font-family: var(--serif); font-size: 14px; color: var(--ink); }
+.footer-brand-text .fb2 { font-size: 9px; color: var(--ink-faint); letter-spacing: 2px; text-transform: uppercase; }
+.footer-copy { font-size: 12px; color: var(--ink-faint); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a {
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--saffron); }
+
+/* ── FLOATING PARTICLES (CSS) ── */
+.particle-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.css-particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatParticle var(--dur, 20s) var(--delay, 0s) ease-in-out infinite;
+}
+@keyframes floatParticle {
+  0%   { opacity: 0; transform: translateY(100vh) scale(0); }
+  10%  { opacity: var(--maxop, 0.6); }
+  90%  { opacity: var(--maxop, 0.6); }
+  100% { opacity: 0; transform: translateY(-10vh) scale(1) translateX(var(--dx, 30px)); }
+}
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal { opacity: 0; transform: translateY(30px); }
+.reveal.visible {
+  animation: revealUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+@keyframes revealUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── GLASSMORPHISM DECORATIONS ── */
+.glass-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(60px);
+  opacity: 0.08;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 14px 20px; }
+  nav.scrolled { padding: 10px 20px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .newsletter-mockup { transform: none; }
+  .cards-3d-wrap { grid-template-columns: repeat(2, 1fr); }
+  .steps-wrap { grid-template-columns: 1fr; }
+  .steps-wrap::before { display: none; }
+  .links-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .cta-box { padding: 48px 28px; }
+  .topics-orbit { height: 360px; }
+  .orbit-ring-2 { width: 320px; height: 320px; }
+  .orbit-center { width: 88px; height: 88px; }
+  .orbit-center-text { font-size: 22px; }
+}
+@media (max-width: 640px) {
+  .cards-3d-wrap { grid-template-columns: 1fr; }
+  .hero-form { flex-direction: column; border-radius: 16px; padding: 12px; width: 100%; }
+  .hero-form input { padding: 6px 4px; }
+  .btn-primary { width: 100%; text-align: center; border-radius: 10px; }
+  .cta-form { flex-direction: column; border-radius: 16px; padding: 12px; }
+  .btn-cta { width: 100%; border-radius: 10px; }
+  footer { flex-direction: column; align-items: flex-start; }
+  .nav-cta .nav-link { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── CANVAS ── -->
+<canvas id="canvas-bg"></canvas>
+
+<!-- ── CURSOR ── -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- ── PARTICLES ── -->
+<div class="particle-container" id="particles"></div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a class="nav-brand" href="#">
+    <div class="nav-logo-mark">M</div>
+    <div class="nav-brand-text">
+      <span class="n1">MBA India Daily</span>
+      <span class="n2">Business Intelligence</span>
+    </div>
+  </a>
+  <div class="nav-cta">
+    <a class="nav-link" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Today's Edition</a>
+    <a class="nav-link" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn-nav" href="#subscribe">Subscribe Free →</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow" id="heroEyebrow">
+    <span class="pulse-dot"></span>
+    Daily Edition Live · 25 June 2026
+  </div>
+
+  <h1 class="hero-headline" id="heroHeadline">
+    <span class="line">India's Markets,</span>
+    <span class="line grad-text">Decoded</span>
+    <span class="line">Every Morning.</span>
+  </h1>
+
+  <p class="hero-sub" id="heroSub">
+    The only daily intelligence briefing built for MBA students and future managers — connecting global events to India's economy, markets, and your career.
+  </p>
+
+  <div class="hero-form-wrap" id="heroForm">
+    <form class="hero-form" id="heroSubscribeForm" onsubmit="handleSubscribe(event, 'heroSubscribeForm', 'heroSuccess')">
+      <input type="email" placeholder="your@email.com" required autocomplete="email">
+      <button class="btn-primary" type="submit">Subscribe Free</button>
+    </form>
+    <div class="success-msg" id="heroSuccess">
+      <span class="s-icon">🎉</span>
+      <span class="s-title">You're in!</span>
+      <span class="s-text">Check your inbox for the welcome brief.</span>
+    </div>
+    <p class="hero-social-proof"><span>Free forever.</span> No spam. Unsubscribe anytime.</p>
+  </div>
+
+  <div class="hero-badges" id="heroBadges">
+    <div class="badge"><span class="dot" style="background:var(--saffron)"></span>India Economy</div>
+    <div class="badge"><span class="dot" style="background:var(--teal)"></span>Markets & Finance</div>
+    <div class="badge"><span class="dot" style="background:var(--gold)"></span>Business Strategy</div>
+    <div class="badge"><span class="dot" style="background:var(--green)"></span>AI & Tech</div>
+    <div class="badge"><span class="dot" style="background:var(--red)"></span>Startups</div>
+    <div class="badge"><span class="dot" style="background:var(--ink-dim)"></span>Career Insights</div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-section">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item"><span class="t-icon">◆</span> Sensex Analysis</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> RBI Policy Watch</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> India GDP Insights</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Startup Funding Rounds</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Global → India Impact</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Supply Chain Intelligence</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Marketing Deep Dives</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> HR & Leadership</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Manager Takeaways</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Industry Heat Maps</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Connection Maps</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Career Intelligence</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="t-icon">◆</span> Sensex Analysis</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> RBI Policy Watch</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> India GDP Insights</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Startup Funding Rounds</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Global → India Impact</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Supply Chain Intelligence</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Marketing Deep Dives</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> HR & Leadership</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Manager Takeaways</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Industry Heat Maps</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Connection Maps</span>
+    <span class="ticker-item"><span class="t-icon">◆</span> Career Intelligence</span>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<section id="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-val" data-count="12">0</div>
+        <div class="stat-label">In-depth sections<br>every single day</div>
+      </div>
+      <div class="stat-card reveal" style="animation-delay:0.1s">
+        <div class="stat-val" data-count="30">0</div>
+        <div class="stat-label">Business stories<br>curated & analysed</div>
+      </div>
+      <div class="stat-card reveal" style="animation-delay:0.2s">
+        <div class="stat-val" data-suffix="+" data-count="5">0</div>
+        <div class="stat-label">Manager insights<br>per edition</div>
+      </div>
+      <div class="stat-card reveal" style="animation-delay:0.3s">
+        <div class="stat-val">Free</div>
+        <div class="stat-label">Always free for<br>MBA students</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-visual reveal">
+        <div class="mockup-glow"></div>
+        <div class="newsletter-mockup">
+          <div class="mockup-topbar">
+            <div class="mockup-dots">
+              <div class="mockup-dot r"></div>
+              <div class="mockup-dot y"></div>
+              <div class="mockup-dot g"></div>
+            </div>
+            <div class="mockup-url">mbaindiadailyblog.vercel.app</div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-headline">Micron beat Wall Street by ₹5 lakh crore.<br>India's monsoon is 43% below normal.</div>
+            <div class="mockup-stat-row">
+              <div class="mockup-stat"><div class="mv">$41B</div><div class="ml">Micron Revenue</div></div>
+              <div class="mockup-stat"><div class="mv" style="color:var(--red)">-43%</div><div class="ml">Monsoon Deficit</div></div>
+              <div class="mockup-stat"><div class="mv" style="color:var(--green)">+777</div><div class="ml">Sensex Points</div></div>
+            </div>
+            <div class="mockup-cards">
+              <div class="mockup-card">
+                <div class="mc-tag">Finance</div>
+                <div class="mc-text">Bajaj Auto ₹15,000 Cr buyback — what it signals about management confidence</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mc-tag">AI & Tech</div>
+                <div class="mc-text">Agentic AI enters bancassurance — India's first autonomous insurance platform</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mc-tag">Startups</div>
+                <div class="mc-text">Maya Research: 3M downloads, voice-first AI for India's 600M smartphone users</div>
+              </div>
+              <div class="mockup-card">
+                <div class="mc-tag">HR & Career</div>
+                <div class="mc-text">PSU banking is a genuine career option again — here's the data behind the narrative</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-content">
+        <p class="section-eyebrow">What is MBA India Daily</p>
+        <h2 class="about-title reveal">
+          Not just news.<br><span class="grad-text">Intelligence.</span>
+        </h2>
+        <p class="about-body reveal">
+          Most business news tells you what happened. MBA India Daily tells you why it matters, how it connects to everything else, and what it means for your career and investments.
+          <br><br>
+          Every morning, we decode India's most important business events through a manager's lens — combining macro economics, market signals, and strategic thinking into one sharp briefing.
+        </p>
+        <div class="feature-list">
+          <div class="feature-item reveal">
+            <div class="feature-icon" style="background:rgba(255,122,66,0.1)">📊</div>
+            <div class="feature-text">
+              <strong>Why It Matters + Manager Takeaway</strong>
+              <span>Every story comes with two boxes: the real-world implication and the strategic lesson you can apply immediately.</span>
+            </div>
+          </div>
+          <div class="feature-item reveal" style="animation-delay:0.1s">
+            <div class="feature-icon" style="background:rgba(0,200,224,0.1)">🔗</div>
+            <div class="feature-text">
+              <strong>Connection Maps</strong>
+              <span>See how two seemingly unrelated events combine to create one powerful market insight.</span>
+            </div>
+          </div>
+          <div class="feature-item reveal" style="animation-delay:0.2s">
+            <div class="feature-icon" style="background:rgba(255,209,102,0.1)">🗺️</div>
+            <div class="feature-text">
+              <strong>Industry Heat Maps</strong>
+              <span>Interactive sector analysis — Growing, Stable, or Under Pressure — with drivers and what to watch.</span>
+            </div>
+          </div>
+          <div class="feature-item reveal" style="animation-delay:0.3s">
+            <div class="feature-icon" style="background:rgba(68,232,160,0.1)">🎯</div>
+            <div class="feature-text">
+              <strong>Career Intelligence</strong>
+              <span>Every section ends with a career implication — because what you know shapes where you go.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHAT'S INSIDE ── -->
+<section id="inside">
+  <div class="wrap">
+    <p class="section-eyebrow reveal" style="justify-content:center;margin-bottom:16px">What's Inside Every Edition</p>
+    <h2 class="inside-title reveal">Flip to explore</h2>
+    <p class="inside-sub reveal">Each section is a different lens on the same day. Hover any card to see what's inside.</p>
+    <div class="cards-3d-wrap">
+
+      <div class="card-3d reveal">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">01 / 06</div>
+            <div class="card-emoji">📰</div>
+            <div class="card-title-3d">Top Stories</div>
+            <div class="card-desc">The 6 biggest business events every MBA student needs to know — with manager takeaways.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>6 deeply analysed stories</li>
+              <li>Why it matters box</li>
+              <li>Manager takeaway box</li>
+              <li>Causal flow diagram</li>
+              <li>Source attribution</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-3d reveal" style="animation-delay:0.1s">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">02 / 06</div>
+            <div class="card-emoji">🇮🇳</div>
+            <div class="card-title-3d">India Economy & Global Impact</div>
+            <div class="card-desc">Macro signals, RBI policy, inflation data, and how the world is reshaping India's economic story.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>India Economy deep dives</li>
+              <li>Global → India analysis</li>
+              <li>Policy interpretation</li>
+              <li>Consumer-level impact</li>
+              <li>Leading indicators</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-3d reveal" style="animation-delay:0.2s">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">03 / 06</div>
+            <div class="card-emoji">💰</div>
+            <div class="card-title-3d">Finance & Markets</div>
+            <div class="card-desc">Buybacks, IPOs, PE exits, M&A, and everything that moves capital — explained clearly.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>Market event analysis</li>
+              <li>Investment mechanics</li>
+              <li>Deal commentary</li>
+              <li>Finance manager lens</li>
+              <li>Consumer finance angle</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-3d reveal" style="animation-delay:0.3s">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">04 / 06</div>
+            <div class="card-emoji">🤖</div>
+            <div class="card-title-3d">Tech, AI & Startups</div>
+            <div class="card-desc">AI investments, startup funding, emerging tech — and the future jobs they are creating right now.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>AI industry analysis</li>
+              <li>Indian startup raises</li>
+              <li>Future jobs section</li>
+              <li>Business opportunity maps</li>
+              <li>Founder lessons</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-3d reveal" style="animation-delay:0.4s">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">05 / 06</div>
+            <div class="card-emoji">🔗</div>
+            <div class="card-title-3d">Connection Map</div>
+            <div class="card-desc">Watch two events from different sections combine into one compound insight you'd never see in isolation.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>3 event-pair chains</li>
+              <li>Combined impact analysis</li>
+              <li>Cross-domain thinking</li>
+              <li>The through-line insight</li>
+              <li>Systems-level reasoning</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-3d reveal" style="animation-delay:0.5s">
+        <div class="card-3d-inner">
+          <div class="card-face card-front">
+            <div class="card-number">06 / 06</div>
+            <div class="card-emoji">🧠</div>
+            <div class="card-title-3d">Manager's Takeaways</div>
+            <div class="card-desc">5 philosophical insights extracted from the day's news — with direct career and business application.</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-back-title">What you get</div>
+            <ul class="card-back-list">
+              <li>5 deep insights per day</li>
+              <li>Business philosophy</li>
+              <li>Career applications</li>
+              <li>Investment frameworks</li>
+              <li>Quote of the day</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="wrap">
+    <p class="section-eyebrow reveal" style="justify-content:center;margin-bottom:16px">How It Works</p>
+    <h2 class="how-title reveal">Dead simple.</h2>
+    <p class="how-sub reveal">Three steps between you and becoming the sharpest person in every business conversation.</p>
+    <div class="steps-wrap">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Subscribe Free</h3>
+        <p>Enter your email. That's it. No credit card, no trial period, no catch.</p>
+      </div>
+      <div class="step reveal" style="animation-delay:0.15s">
+        <div class="step-num">2</div>
+        <h3>Read Every Morning</h3>
+        <p>A fresh intelligence briefing lands in your inbox before your first class or meeting.</p>
+      </div>
+      <div class="step reveal" style="animation-delay:0.3s">
+        <div class="step-num">3</div>
+        <h3>Think Differently</h3>
+        <p>Start connecting dots others miss. Build the mental models that make managers extraordinary.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TOPICS ORBIT ── -->
+<section id="topics">
+  <div class="wrap">
+    <p class="section-eyebrow reveal" style="justify-content:center;margin-bottom:16px">Every Topic, Every Day</p>
+    <h2 class="topics-title reveal">12 sections.<br><span class="grad-text">One briefing.</span></h2>
+    <p class="topics-sub reveal">We cover the full spectrum of business intelligence every single morning.</p>
+    <div class="topics-orbit reveal">
+      <div class="orbit-ring orbit-ring-1"></div>
+      <div class="orbit-ring orbit-ring-2"></div>
+      <div class="orbit-center">
+        <div class="orbit-center-text">MID</div>
+      </div>
+      <!-- inner ring chips -->
+      <div class="orbit-chip" style="top:22%;left:72%">📰 Top Stories</div>
+      <div class="orbit-chip" style="top:70%;left:68%">🇮🇳 India Economy</div>
+      <div class="orbit-chip" style="top:78%;left:20%">🌐 Global Impact</div>
+      <div class="orbit-chip" style="top:22%;left:12%">💰 Finance</div>
+      <!-- outer ring chips -->
+      <div class="orbit-chip" style="top:5%;left:42%">📣 Marketing</div>
+      <div class="orbit-chip" style="top:44%;left:82%">⚙️ Operations</div>
+      <div class="orbit-chip" style="top:88%;left:54%">👥 HR & Leadership</div>
+      <div class="orbit-chip" style="top:88%;left:16%">🤖 Tech & AI</div>
+      <div class="orbit-chip" style="top:44%;left:2%">🚀 Startups</div>
+      <div class="orbit-chip" style="top:3%;left:14%">🔗 Connection Map</div>
+      <div class="orbit-chip" style="top:3%;left:66%">🗺️ Heat Map</div>
+      <div class="orbit-chip" style="top:56%;left:50%;transform:translateX(-50%)">🧠 Takeaways</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SUBSCRIBE CTA ── -->
+<section id="subscribe">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <p class="section-eyebrow" style="justify-content:center;margin-bottom:20px">Start Today</p>
+      <h2 class="cta-title">
+        The market doesn't wait.<br><span class="grad-text">Neither should you.</span>
+      </h2>
+      <p class="cta-sub">
+        Join MBA students and business professionals who start every morning with India's sharpest business briefing.
+      </p>
+      <div class="cta-form-wrap">
+        <form class="cta-form" id="ctaSubscribeForm" onsubmit="handleSubscribe(event, 'ctaSubscribeForm', 'ctaSuccess')">
+          <input type="email" placeholder="Enter your email address" required autocomplete="email">
+          <button class="btn-cta" type="submit">Get Free Access →</button>
+        </form>
+        <div class="success-msg" id="ctaSuccess">
+          <span class="s-icon">🎉</span>
+          <span class="s-title">Welcome to MBA India Daily!</span>
+          <span class="s-text">Your first edition arrives tomorrow morning. Check your inbox.</span>
+        </div>
+        <div class="cta-features">
+          <span class="cta-feat">Free forever</span>
+          <span class="cta-feat">No spam, ever</span>
+          <span class="cta-feat">Unsubscribe anytime</span>
+          <span class="cta-feat">Daily delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LINKS ── -->
+<section id="links">
+  <div class="wrap">
+    <p class="section-eyebrow reveal" style="justify-content:center;margin-bottom:16px">Find Us Everywhere</p>
+    <div class="links-grid">
+      <a class="link-card li reveal" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">
+        <div class="link-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" stroke="#0077B5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="4" cy="4" r="2" stroke="#0077B5" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="link-title">LinkedIn</div>
+        <div class="link-desc">Business updates, industry insights, and behind-the-scenes from the newsletter.</div>
+        <div class="link-arrow">@mbaindiadaily →</div>
+      </a>
+      <a class="link-card ig reveal" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener" style="animation-delay:0.1s">
+        <div class="link-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#igGrad)" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4" stroke="url(#igGrad)" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/>
+            <defs>
+              <linearGradient id="igGrad" x1="2" y1="22" x2="22" y2="2">
+                <stop offset="0%" stop-color="#F58529"/>
+                <stop offset="50%" stop-color="#E1306C"/>
+                <stop offset="100%" stop-color="#833AB4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="link-title">Instagram</div>
+        <div class="link-desc">Daily story cards, market stat drops, and quick visual breakdowns of big moves.</div>
+        <div class="link-arrow">@mbaindiadaily →</div>
+      </a>
+      <a class="link-card web reveal" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener" style="animation-delay:0.2s">
+        <div class="link-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#FF7A42" stroke-width="2"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="#FF7A42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="link-title">Today's Edition</div>
+        <div class="link-desc">Read the live daily edition — fresh every morning with the day's most important business intelligence.</div>
+        <div class="link-arrow">mbaindiadailyblog.vercel.app →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a class="footer-brand" href="#">
+    <div class="footer-logo">M</div>
+    <div class="footer-brand-text">
+      <div class="fb1">MBA India Daily</div>
+      <div class="fb2">Business Intelligence</div>
+    </div>
+  </a>
+  <div class="footer-copy">© 2026 MBA India Daily · Built for Future Managers</div>
+  <div class="footer-links">
+    <a href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Today's Edition</a>
+    <a href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</footer>
+
+<script>
+// ── THREE.JS BACKGROUND ──
+(function() {
+  const canvas = document.getElementById('canvas-bg');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 30;
+
+  // Particles
+  const particleCount = 1200;
+  const positions = new Float32Array(particleCount * 3);
+  const colors = new Float32Array(particleCount * 3);
+  const sizes = new Float32Array(particleCount);
+
+  const palettes = [
+    [1.0, 0.478, 0.259],   // saffron
+    [0.0, 0.784, 0.878],   // teal
+    [1.0, 0.82, 0.4],      // gold
+    [0.267, 0.91, 0.627],  // green
+  ];
+
+  for (let i = 0; i < particleCount; i++) {
+    const i3 = i * 3;
+    const r = 40 + Math.random() * 30;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i3]     = r * Math.sin(phi) * Math.cos(theta);
+    positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    positions[i3 + 2] = r * Math.cos(phi);
+
+    const col = palettes[Math.floor(Math.random() * palettes.length)];
+    colors[i3]     = col[0];
+    colors[i3 + 1] = col[1];
+    colors[i3 + 2] = col[2];
+
+    sizes[i] = 0.5 + Math.random() * 1.8;
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.15,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.7,
+    sizeAttenuation: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+
+  const points = new THREE.Points(geo, mat);
+  scene.add(points);
+
+  // Floating geometric shapes
+  const shapes = [];
+  const shapeGeos = [
+    new THREE.OctahedronGeometry(1.2, 0),
+    new THREE.TetrahedronGeometry(1.0, 0),
+    new THREE.IcosahedronGeometry(0.9, 0),
+  ];
+  const shapeCols = [0xFF7A42, 0x00C8E0, 0xFFD166, 0x44E8A0];
+
+  for (let i = 0; i < 12; i++) {
+    const geo = shapeGeos[i % shapeGeos.length];
+    const mat = new THREE.MeshBasicMaterial({
+      color: shapeCols[i % shapeCols.length],
+      wireframe: true,
+      transparent: true,
+      opacity: 0.12 + Math.random() * 0.1,
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(
+      (Math.random() - 0.5) * 50,
+      (Math.random() - 0.5) * 40,
+      (Math.random() - 0.5) * 20 - 10
+    );
+    mesh.rotation.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, 0);
+    const speed = { rx: (Math.random() - 0.5) * 0.008, ry: (Math.random() - 0.5) * 0.006 };
+    shapes.push({ mesh, speed });
+    scene.add(mesh);
+  }
+
+  // Mouse parallax
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth - 0.5) * 2;
+    my = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  let scrollY = 0;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+
+  const clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    points.rotation.y = t * 0.025;
+    points.rotation.x = t * 0.01;
+
+    camera.position.x += (mx * 3 - camera.position.x) * 0.03;
+    camera.position.y += (-my * 2 - camera.position.y) * 0.03;
+    camera.position.z = 30 + scrollY * 0.01;
+    camera.lookAt(scene.position);
+
+    shapes.forEach(({ mesh, speed }) => {
+      mesh.rotation.x += speed.rx;
+      mesh.rotation.y += speed.ry;
+    });
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+})();
+
+// ── CSS PARTICLES ──
+(function() {
+  const container = document.getElementById('particles');
+  const colors = ['rgba(255,122,66,', 'rgba(0,200,224,', 'rgba(255,209,102,', 'rgba(68,232,160,'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'css-particle';
+    const size = 2 + Math.random() * 4;
+    const col = colors[Math.floor(Math.random() * colors.length)];
+    const op = 0.2 + Math.random() * 0.4;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${col}${op});
+      --dur:${15 + Math.random()*25}s;
+      --delay:-${Math.random()*20}s;
+      --dx:${(Math.random()-0.5)*80}px;
+      --maxop:${op};
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ── CURSOR ──
+(function() {
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let cx = 0, cy = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+
+  function animCursor() {
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+    rx += (cx - rx) * 0.12;
+    ry += (cy - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  document.querySelectorAll('a,button,input,.card-3d,.feature-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '16px';
+      cursor.style.height = '16px';
+      cursor.style.background = 'var(--saffron)';
+      ring.style.width  = '56px';
+      ring.style.height = '56px';
+      ring.style.borderColor = 'rgba(255,122,66,0.5)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursor.style.background = 'var(--teal)';
+      ring.style.width  = '36px';
+      ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(0,200,224,0.5)';
+    });
+  });
+})();
+
+// ── NAV SCROLL ──
+(function() {
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+})();
+
+// ── HERO ANIMATIONS (GSAP) ──
+(function() {
+  if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('#heroEyebrow', { opacity: 1, y: 0, duration: 0.8, delay: 0.3 })
+    .to('#heroHeadline', {
+      opacity: 1, duration: 0,
+    }, '<')
+    .fromTo('#heroHeadline .word',
+      { opacity: 0, y: 60, rotateX: -40 },
+      { opacity: 1, y: 0, rotateX: 0, duration: 0.9, stagger: 0.06, ease: 'back.out(1.4)' },
+      '<0.2'
+    )
+    .to('#heroSub',    { opacity: 1, y: 0, duration: 0.8 }, '<0.5')
+    .to('#heroForm',   { opacity: 1, y: 0, duration: 0.7 }, '<0.2')
+    .to('#heroBadges', { opacity: 1, y: 0, duration: 0.7 }, '<0.2');
+
+  // Wrap words in spans
+  document.querySelectorAll('.hero-headline .line').forEach(line => {
+    line.innerHTML = line.textContent.split(' ')
+      .map(w => `<span class="word" style="display:inline-block">${w}&nbsp;</span>`).join('');
+  });
+})();
+
+// ── SCROLL REVEAL ──
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// ── COUNT UP ANIMATION ──
+(function() {
+  const statVals = document.querySelectorAll('.stat-val[data-count]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '+';
+      let start = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= target) { start = target; clearInterval(timer); }
+        el.textContent = Math.floor(start) + suffix;
+      }, 16);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  statVals.forEach(el => observer.observe(el));
+})();
+
+// ── SUBSCRIBE HANDLER ──
+function handleSubscribe(e, formId, successId) {
+  e.preventDefault();
+  const form = document.getElementById(formId);
+  const success = document.getElementById(successId);
+  const btn = form.querySelector('button');
+  btn.textContent = 'Subscribing...';
+  btn.disabled = true;
+  setTimeout(() => {
+    form.style.display = 'none';
+    success.style.display = 'flex';
+  }, 900);
+}
+
+// ── GSAP SCROLL PARALLAX ──
+(function() {
+  if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to('.hero-headline', {
+    y: -80,
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+  gsap.to('.hero-sub', {
+    y: -50,
+    scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  // Staggered cards
+  gsap.utils.toArray('.stat-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 50, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, delay: i * 0.08,
+        scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.link-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 60, opacity: 0, rotateX: 15 },
+      { y: 0, opacity: 1, rotateX: 0, duration: 0.8, delay: i * 0.12,
+        scrollTrigger: { trigger: card, start: 'top 85%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  // CTA box
+  gsap.fromTo('.cta-box',
+    { scale: 0.94, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 0.8,
+      scrollTrigger: { trigger: '.cta-box', start: 'top 80%', toggleActions: 'play none none none' }
+    }
+  );
+})();
+</script>
+</body>
+</html>
