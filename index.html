@@ -3,1207 +3,1348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MBA India Daily — Business Intelligence for Future Managers</title>
-<meta name="description" content="India's sharpest daily business intelligence newsletter for MBA students and future managers. Markets, economy, strategy — decoded every morning.">
+<title>MBA India Daily — India's Premier MBA Business Newsletter</title>
+<meta name="description" content="India's most comprehensive MBA business newsletter. 12 sections, 30+ stories daily. Follow on LinkedIn and Instagram.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700;1,9..144,900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
-:root {
-  --bg:       #0A1912;
-  --bg2:      #0E2018;
-  --bg3:      #122618;
-  --saffron:  #E8922A;
-  --saffron2: #F5A84A;
-  --green:    #5DBF8A;
-  --green2:   #3DA870;
-  --ivory:    #F2E8D5;
-  --ivory2:   #D9CBAF;
-  --ivory3:   #A08B6A;
-  --rule:     #1A3024;
-  --gold:     #C9A84C;
-  --red:      #D95F4B;
-  --serif:    'Fraunces', Georgia, serif;
-  --sans:     'Plus Jakarta Sans', system-ui, sans-serif;
-  --mono:     'JetBrains Mono', monospace;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A1912;--bg2:#0E2018;--bg3:#122618;
+  --saffron:#E8922A;--saffron2:#F5A84A;
+  --green:#5DBF8A;--green2:#3DA870;
+  --ivory:#F2E8D5;--ivory2:#D9CBAF;--ivory3:#A08B6A;
+  --rule:#1A3024;--gold:#C9A84C;--red:#D95F4B;
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ivory);
+  font-family:var(--sans);
+  overflow-x:hidden;
+  cursor:none;
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
-body {
-  background: var(--bg);
-  color: var(--ivory);
-  font-family: var(--sans);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── GRAIN ── */
-body::after {
-  content:'';
-  position:fixed; inset:0; z-index:1; pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity:0.5;
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width:4px; }
-::-webkit-scrollbar-track { background:var(--bg); }
-::-webkit-scrollbar-thumb { background:var(--saffron); border-radius:2px; }
+/* ── CUSTOM CURSOR ── */
+#cur-dot,#cur-ring{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%)}
+#cur-dot{width:6px;height:6px;background:var(--saffron);transition:transform .1s}
+#cur-ring{width:32px;height:32px;border:1.5px solid rgba(232,146,42,.5);transition:width .3s,height .3s,opacity .3s}
 
 /* ── CANVAS ── */
-#canvas-bg { position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-/* ── CURSOR ── */
-.cursor,.cursor-ring { position:fixed; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%); z-index:9999; }
-.cursor { width:9px; height:9px; background:var(--saffron); transition:width .3s,height .3s,background .3s; mix-blend-mode:screen; }
-.cursor-ring { width:34px; height:34px; border:1.5px solid rgba(232,146,42,.45); z-index:9998; transition:width .3s,height .3s,border-color .3s; }
-
-/* ── NAV ── */
-nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
-  padding:20px 48px;
-  display:flex; align-items:center; justify-content:space-between;
-  transition:background .4s, padding .4s;
-}
-nav.scrolled {
-  background:rgba(10,25,18,.94);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--rule);
-  padding:13px 48px;
-}
-.nav-brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
-.nav-mark {
-  width:38px; height:38px; border-radius:10px;
-  background:linear-gradient(135deg,var(--saffron),var(--gold));
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--serif); font-weight:900; font-size:19px; color:var(--bg);
-  box-shadow:0 0 24px rgba(232,146,42,.3);
-}
-.nav-text .t1 { font-family:var(--serif); font-size:15.5px; color:var(--ivory); line-height:1.1; }
-.nav-text .t2 { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--ivory3); }
-.nav-links { display:flex; align-items:center; gap:20px; }
-.nav-link { font-size:13.5px; color:var(--ivory2); text-decoration:none; transition:color .2s; }
-.nav-link:hover { color:var(--ivory); }
-.btn-nav {
-  padding:9px 22px;
-  background:linear-gradient(135deg,var(--saffron),var(--saffron2));
-  color:var(--bg); font-size:13px; font-weight:700;
-  border-radius:100px; text-decoration:none; letter-spacing:.3px;
-  transition:transform .2s,box-shadow .2s;
-}
-.btn-nav:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(232,146,42,.4); }
-
-/* ── SHARED ── */
-.wrap { max-width:1160px; margin:0 auto; padding:0 36px; }
-section { position:relative; z-index:2; }
-.eyebrow {
-  font-family:var(--mono); font-size:10.5px; letter-spacing:2.5px;
-  text-transform:uppercase; color:var(--saffron);
-  display:flex; align-items:center; gap:10px;
-}
-.eyebrow::before { content:''; width:20px; height:1px; background:var(--saffron); }
-.grad { background:linear-gradient(135deg,var(--saffron) 0%,var(--gold) 55%,var(--green) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.reveal { opacity:0; transform:translateY(28px); }
-.reveal.in { animation:revUp .75s cubic-bezier(.23,1,.32,1) forwards; }
-@keyframes revUp { to{ opacity:1; transform:translateY(0); } }
-
-/* ── HERO ── */
-#hero {
-  min-height:100vh; display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  text-align:center; padding:130px 24px 80px;
-  overflow:hidden;
-}
-.hero-glow {
-  position:absolute; inset:0; pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 50% 40%, rgba(232,146,42,.11), transparent),
-    radial-gradient(ellipse 40% 35% at 30% 70%, rgba(93,191,138,.07), transparent);
-  animation:hGlow 7s ease-in-out infinite alternate;
-}
-@keyframes hGlow { from{opacity:.8} to{opacity:1.2} }
-
-.hero-eyebrow {
-  display:inline-flex; align-items:center; gap:9px;
-  font-family:var(--mono); font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
-  color:var(--saffron); padding:7px 18px;
-  border:1px solid rgba(232,146,42,.25); border-radius:100px;
-  background:rgba(232,146,42,.06);
-  margin-bottom:32px; opacity:0;
-}
-.pdot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(93,191,138,.2); animation:pd 2s infinite; }
-@keyframes pd { 0%,100%{opacity:1} 50%{opacity:.35} }
-
-.hero-h1 {
-  font-family:var(--serif); font-size:clamp(44px,7.5vw,98px);
-  font-weight:900; line-height:.98; letter-spacing:-3px;
-  max-width:960px; margin-bottom:28px; opacity:0;
-}
-.hero-h1 em { font-style:italic; }
-
-.hero-sub {
-  font-size:clamp(16px,2vw,19px); color:var(--ivory2);
-  max-width:540px; line-height:1.7; margin-bottom:48px; opacity:0;
-}
-
-.hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; opacity:0; }
-.btn-primary {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:15px 32px;
-  background:linear-gradient(135deg,var(--saffron),var(--saffron2));
-  color:var(--bg); font-weight:700; font-size:15px;
-  border-radius:100px; text-decoration:none;
-  transition:transform .2s,box-shadow .2s;
-}
-.btn-primary:hover { transform:scale(1.04); box-shadow:0 10px 32px rgba(232,146,42,.45); }
-.btn-outline {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:15px 30px;
-  background:rgba(242,232,213,.05); color:var(--ivory);
-  font-weight:600; font-size:15px;
-  border:1px solid rgba(242,232,213,.15); border-radius:100px;
-  text-decoration:none; transition:border-color .2s,background .2s,transform .2s;
-}
-.btn-outline:hover { border-color:rgba(93,191,138,.4); background:rgba(93,191,138,.08); transform:scale(1.02); }
-
-.hero-note { margin-top:16px; font-size:12.5px; color:var(--ivory3); font-family:var(--mono); letter-spacing:.5px; opacity:0; }
-.hero-note span { color:var(--green); }
-
-.hero-badges { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:56px; opacity:0; }
-.badge {
-  display:flex; align-items:center; gap:7px;
-  padding:7px 15px;
-  background:rgba(255,255,255,.03);
-  border:1px solid var(--rule); border-radius:100px;
-  font-size:12px; color:var(--ivory2);
-}
-.bdot { width:6px; height:6px; border-radius:50%; }
-
-.scroll-cue {
-  position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
-  display:flex; flex-direction:column; align-items:center; gap:7px; opacity:0;
-  animation:fadeIn .8s 2.8s forwards;
-}
-@keyframes fadeIn { to{opacity:1} }
-.scroll-cue span { font-family:var(--mono); font-size:9.5px; letter-spacing:2px; text-transform:uppercase; color:var(--ivory3); }
-.scroll-line { width:1px; height:38px; background:linear-gradient(to bottom,var(--saffron),transparent); animation:sLine 2s ease-in-out infinite; }
-@keyframes sLine { 0%{transform:scaleY(0);transform-origin:top;opacity:0} 50%{transform:scaleY(1);transform-origin:top;opacity:1} 100%{transform:scaleY(0);transform-origin:bottom;opacity:0} }
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 /* ── TICKER ── */
-.ticker {
-  position:relative; z-index:2;
-  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
-  background:rgba(232,146,42,.04); padding:14px 0; overflow:hidden;
+.ticker-wrap{
+  position:relative;z-index:2;
+  background:var(--saffron);
+  overflow:hidden;
+  padding:10px 0;
+  border-top:2px solid var(--gold);
+  border-bottom:2px solid var(--gold);
 }
-.ticker-inner { display:flex; width:max-content; animation:tick 45s linear infinite; }
-.ticker-inner:hover { animation-play-state:paused; }
-@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-.ti {
-  display:inline-flex; align-items:center; gap:9px;
-  padding:0 36px; font-family:var(--mono); font-size:11px;
-  color:var(--ivory3); letter-spacing:.5px; white-space:nowrap;
+.ticker-track{
+  display:flex;white-space:nowrap;
+  animation:ticker 35s linear infinite;
 }
-.ti .ic { color:var(--saffron); }
+.ticker-track span{padding:0 40px;font-family:var(--mono);font-size:12px;color:#0A1912;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── HERO ── */
+#hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;
+}
+.hero-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--saffron);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--saffron);opacity:.4;max-width:60px}
+.hero-logo{
+  font-family:var(--serif);font-size:clamp(52px,9vw,110px);
+  font-weight:900;line-height:.92;letter-spacing:-.03em;
+  color:var(--ivory);margin-bottom:8px;
+}
+.hero-logo span{color:var(--saffron)}
+.hero-tagline{
+  font-family:var(--serif);font-size:clamp(16px,2.5vw,22px);
+  font-weight:400;font-style:italic;
+  color:var(--ivory2);margin-bottom:40px;
+}
+.hero-desc{
+  max-width:540px;font-size:16px;line-height:1.7;
+  color:var(--ivory3);margin-bottom:48px;
+}
+.hero-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:4px;
+  font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:.04em;
+  text-decoration:none;cursor:none;transition:transform .2s,box-shadow .2s;
+  border:2px solid transparent;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{
+  background:var(--saffron);color:#0A1912;
+  box-shadow:0 0 0 0 var(--saffron);
+}
+.btn-primary:hover{box-shadow:0 8px 32px rgba(232,146,42,.35)}
+.btn-outline{
+  border-color:var(--ivory);color:var(--ivory);
+  background:transparent;
+}
+.btn-outline:hover{background:rgba(242,232,213,.08)}
+.btn-ghost{
+  border-color:var(--rule);color:var(--ivory2);
+  background:transparent;
+}
+.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+.hero-scroll{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ivory3);display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.hero-scroll::after{
+  content:'';width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--ivory3),transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
 
 /* ── STATS ── */
-#stats { padding:88px 0; }
-.stats-row {
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:1px; background:var(--rule);
-  border:1px solid var(--rule); border-radius:20px; overflow:hidden;
+#stats{
+  position:relative;z-index:2;
+  padding:80px 24px;
+  border-top:1px solid var(--rule);
 }
-.sc {
-  background:var(--bg2); padding:36px 28px;
-  position:relative; overflow:hidden; transition:background .3s;
+.stats-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:2px;max-width:900px;margin:0 auto;
+  border:1px solid var(--rule);
 }
-.sc::after {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,rgba(232,146,42,.06),transparent);
-  opacity:0; transition:opacity .3s;
+.stat-cell{
+  padding:40px 24px;text-align:center;
+  border:1px solid var(--rule);
+  background:rgba(14,32,24,.5);
+  transition:background .3s;
 }
-.sc:hover { background:var(--bg3); }
-.sc:hover::after { opacity:1; }
-.sv {
-  font-family:var(--serif); font-size:48px; font-weight:900; line-height:1;
-  background:linear-gradient(135deg,var(--saffron),var(--gold));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+.stat-cell:hover{background:rgba(93,191,138,.06)}
+.stat-num{
+  font-family:var(--serif);font-size:clamp(48px,6vw,72px);
+  font-weight:900;color:var(--saffron);line-height:1;
+  display:block;margin-bottom:8px;
 }
-.sl { font-size:13px; color:var(--ivory2); margin-top:8px; line-height:1.45; }
+.stat-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ivory3);
+}
 
 /* ── ABOUT ── */
-#about { padding:100px 0; }
-.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
-/* mockup */
-.mockup-wrap { position:relative; }
-.mockup {
-  background:var(--bg2); border:1px solid var(--rule); border-radius:20px; overflow:hidden;
-  transform:perspective(1100px) rotateY(-7deg) rotateX(4deg);
-  box-shadow:36px 36px 72px rgba(0,0,0,.65),0 0 0 1px var(--rule);
-  transition:transform .6s;
+#about{
+  position:relative;z-index:2;
+  padding:100px 24px;
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
 }
-.mockup-wrap:hover .mockup { transform:perspective(1100px) rotateY(-2deg) rotateX(1deg); }
-.m-bar {
-  background:rgba(232,146,42,.07); border-bottom:1px solid var(--rule);
-  padding:13px 16px; display:flex; align-items:center; gap:10px;
+@media(max-width:768px){#about{grid-template-columns:1fr;gap:48px}}
+.about-text h2{
+  font-family:var(--serif);font-size:clamp(36px,5vw,56px);
+  font-weight:700;line-height:1.1;margin-bottom:24px;
+  color:var(--ivory);
 }
-.m-dots { display:flex; gap:6px; }
-.md { width:10px; height:10px; border-radius:50%; }
-.m-url {
-  flex:1; background:rgba(255,255,255,.04); border-radius:6px;
-  padding:5px 12px; font-family:var(--mono); font-size:9.5px; color:var(--ivory3);
+.about-text h2 em{color:var(--saffron);font-style:italic}
+.about-text p{font-size:16px;line-height:1.8;color:var(--ivory3);margin-bottom:16px}
+.about-mockup{
+  position:relative;
+  perspective:1200px;
 }
-.m-body { padding:20px 18px; }
-.m-hed { font-family:var(--serif); font-size:17px; line-height:1.2; margin-bottom:14px; }
-.m-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-bottom:14px; }
-.mst {
-  background:rgba(93,191,138,.07); border:1px solid rgba(93,191,138,.15);
-  border-radius:8px; padding:8px 10px; text-align:center;
+.mockup-card{
+  background:#F5EDD8;border-radius:4px;padding:28px 24px;
+  transform:rotateY(-8deg) rotateX(4deg);
+  box-shadow:40px 40px 80px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.1);
+  transition:transform .5s ease;
+  color:#1A1A1A;
 }
-.mst .mv { font-family:var(--serif); font-size:15px; color:var(--green); }
-.mst .ml { font-size:8px; color:var(--ivory3); text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
-.m-cards { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-.mc { background:rgba(255,255,255,.03); border:1px solid var(--rule); border-radius:8px; padding:10px; }
-.mc-tag { font-size:8px; text-transform:uppercase; letter-spacing:.8px; font-weight:700; color:var(--saffron); margin-bottom:5px; }
-.mc-t { font-size:11px; color:var(--ivory2); line-height:1.35; }
-.mockup-glow {
-  position:absolute; top:-50px; right:-50px; width:220px; height:220px;
-  background:radial-gradient(circle,rgba(232,146,42,.18),transparent 70%);
-  pointer-events:none;
+.mockup-card:hover{transform:rotateY(-2deg) rotateX(1deg)}
+.mockup-masthead{
+  font-family:var(--serif);font-size:22px;font-weight:900;
+  text-align:center;border-bottom:2px solid #1A1A1A;
+  padding-bottom:8px;margin-bottom:8px;letter-spacing:.02em;
 }
-/* content */
-.about-h2 { font-family:var(--serif); font-size:clamp(34px,4vw,52px); font-weight:900; line-height:1.05; letter-spacing:-1.5px; margin:16px 0 24px; }
-.about-p { font-size:16px; color:var(--ivory2); line-height:1.75; margin-bottom:36px; }
-.flist { display:flex; flex-direction:column; gap:14px; }
-.fi {
-  display:flex; align-items:flex-start; gap:14px;
-  padding:15px 17px; background:rgba(255,255,255,.02);
-  border:1px solid var(--rule); border-radius:12px;
-  transition:border-color .3s,background .3s,transform .3s;
+.mockup-dateline{
+  font-size:10px;font-family:var(--mono);
+  text-align:center;color:#555;margin-bottom:12px;
+  letter-spacing:.08em;text-transform:uppercase;
 }
-.fi:hover { border-color:rgba(232,146,42,.3); background:rgba(232,146,42,.04); transform:translateX(4px); }
-.fi-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
-.fi strong { display:block; font-size:14px; font-weight:600; margin-bottom:3px; }
-.fi span { font-size:13px; color:var(--ivory2); line-height:1.4; }
+.mockup-hl{
+  font-family:var(--serif);font-size:20px;font-weight:700;
+  line-height:1.2;margin-bottom:10px;
+  border-bottom:1px solid #ccc;padding-bottom:10px;
+}
+.mockup-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:11px;line-height:1.5;color:#333}
+.mockup-col-head{font-weight:700;font-family:var(--sans);font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;border-top:2px solid #1A1A1A;padding-top:4px}
 
-/* ── FLIP CARDS ── */
-#inside { padding:100px 0; background:linear-gradient(180deg,transparent,rgba(232,146,42,.03) 50%,transparent); }
-.sec-title { font-family:var(--serif); font-size:clamp(32px,4vw,50px); font-weight:900; letter-spacing:-1.5px; margin:14px 0 14px; }
-.sec-sub { color:var(--ivory2); font-size:16px; max-width:460px; margin:0 auto 56px; line-height:1.6; }
-.flip-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.flip { perspective:800px; cursor:pointer; }
-.flip-inner {
-  position:relative; width:100%; padding-bottom:115%;
+/* ── NEWSPAPER SCROLL ── */
+#newspaper{
+  position:relative;z-index:2;
+  height:600vh;
+}
+.np-sticky{
+  position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.np-heading{
+  position:absolute;top:40px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ivory3);white-space:nowrap;
+}
+.np-progress-bar{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  width:200px;height:2px;background:var(--rule);
+}
+.np-progress-fill{
+  height:100%;background:var(--saffron);width:0%;
+  transition:width .05s linear;
+}
+.np-book-wrap{
+  perspective:2400px;
+  perspective-origin:50% 50%;
+}
+.np-book{
+  width:min(800px,92vw);
+  height:min(520px,70vw);
+  position:relative;
   transform-style:preserve-3d;
-  transition:transform .65s cubic-bezier(.23,1,.32,1);
 }
-.flip:hover .flip-inner { transform:rotateY(180deg); }
-.ff,.fb {
-  position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden;
-  border-radius:18px; overflow:hidden; padding:24px 20px;
-  border:1px solid var(--rule); display:flex; flex-direction:column;
+.np-left-base{
+  position:absolute;left:0;top:0;
+  width:50%;height:100%;
+  background:#E8DFC8;
+  border-radius:2px 0 0 2px;
+  box-shadow:inset -4px 0 12px rgba(0,0,0,.15);
+  overflow:hidden;
 }
-.ff { background:var(--bg2); }
-.fb { background:linear-gradient(135deg,#0f2a1e,#152e20); transform:rotateY(180deg); border-color:rgba(93,191,138,.2); justify-content:center; }
-.fn { font-family:var(--mono); font-size:10.5px; color:var(--ivory3); letter-spacing:1px; margin-bottom:18px; }
-.femoji { font-size:34px; margin-bottom:14px; }
-.ft { font-family:var(--serif); font-size:19px; font-weight:700; line-height:1.2; margin-bottom:10px; }
-.fd { font-size:13px; color:var(--ivory2); line-height:1.55; margin-top:auto; }
-.fbt { font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:1.5px; color:var(--green); margin-bottom:14px; }
-.fbl { list-style:none; display:flex; flex-direction:column; gap:8px; }
-.fbl li { display:flex; align-items:flex-start; gap:8px; font-size:13px; color:var(--ivory2); }
-.fbl li::before { content:'→'; color:var(--saffron); font-size:12px; margin-top:1px; flex-shrink:0; }
+.np-left-content{
+  padding:clamp(12px,2vw,20px) clamp(10px,1.5vw,18px);
+  height:100%;display:flex;flex-direction:column;
+  font-family:'Fraunces',Georgia,serif;
+  color:#1A1A1A;
+  font-size:clamp(8px,1.2vw,12px);
+}
+.np-left-content .lc-masthead{
+  font-size:clamp(14px,2vw,20px);font-weight:900;
+  text-align:center;
+  border-bottom:2px solid #1A1A1A;padding-bottom:6px;margin-bottom:4px;
+}
+.np-left-content .lc-tagline{
+  font-size:clamp(7px,1vw,10px);text-align:center;
+  font-style:italic;color:#555;margin-bottom:8px;letter-spacing:.05em;
+}
+.np-left-content .lc-body{
+  flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  font-size:clamp(7px,1vw,9px);line-height:1.5;color:#333;
+}
+.np-left-content .lc-col-head{
+  font-weight:700;font-size:clamp(7px,.9vw,9px);
+  text-transform:uppercase;letter-spacing:.04em;
+  border-top:2px solid #1A1A1A;padding-top:4px;margin-bottom:4px;
+}
+.np-page{
+  position:absolute;
+  width:50%;height:100%;
+  right:0;
+  transform-origin:0 50%;
+  transform-style:preserve-3d;
+  --sh:0;
+}
+.np-front,.np-back{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  overflow:hidden;
+  background:#F5EDD8;
+  color:#1A1A1A;
+}
+.np-back{transform:rotateY(180deg)}
+.np-page::after{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:50px;
+  background:linear-gradient(to left,transparent,rgba(0,0,0,calc(.4 * var(--sh,0))));
+  z-index:10;pointer-events:none;
+}
 
-/* ── HOW IT WORKS ── */
-#how { padding:100px 0; }
-.steps { display:grid; grid-template-columns:repeat(3,1fr); gap:36px; position:relative; }
-.steps::before {
-  content:''; position:absolute; top:31px; left:16.5%; right:16.5%;
-  height:1px; background:linear-gradient(90deg,transparent,var(--saffron) 30%,var(--green) 70%,transparent);
+/* ── NEWSPAPER PAGE STYLES ── */
+.np-page-inner{
+  padding:clamp(12px,2vw,20px) clamp(10px,1.5vw,18px);
+  height:100%;display:flex;flex-direction:column;
+  font-size:clamp(8px,1.2vw,11px);
 }
-.step { display:flex; flex-direction:column; align-items:center; text-align:center; position:relative; z-index:1; }
-.snum {
-  width:62px; height:62px; border-radius:50%;
-  background:linear-gradient(135deg,var(--saffron),var(--gold));
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--serif); font-size:26px; font-weight:900; color:var(--bg);
-  margin-bottom:22px;
-  box-shadow:0 0 0 8px rgba(232,146,42,.1),0 12px 32px rgba(232,146,42,.25);
+.np-masthead{
+  font-family:var(--serif);font-size:clamp(16px,2.5vw,26px);
+  font-weight:900;text-align:center;
+  border-top:3px solid #1A1A1A;border-bottom:3px solid #1A1A1A;
+  padding:4px 0;margin-bottom:4px;letter-spacing:.02em;
+  line-height:1;
 }
-.step h3 { font-family:var(--serif); font-size:20px; font-weight:700; margin-bottom:10px; }
-.step p { font-size:14px; color:var(--ivory2); line-height:1.6; max-width:200px; }
+.np-dateline{
+  font-family:var(--mono);font-size:clamp(6px,.8vw,8px);
+  text-align:center;color:#666;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:8px;display:flex;justify-content:space-between;
+  border-bottom:1px solid #aaa;padding-bottom:4px;
+}
+.np-headline{
+  font-family:var(--serif);font-size:clamp(14px,2vw,22px);
+  font-weight:900;line-height:1.1;margin-bottom:6px;
+}
+.np-subhead{
+  font-family:var(--serif);font-size:clamp(10px,1.4vw,14px);
+  font-weight:400;font-style:italic;color:#444;margin-bottom:8px;
+  border-bottom:1px solid #ccc;padding-bottom:6px;
+}
+.np-cols{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;flex:1;
+  font-family:var(--sans);font-size:clamp(7px,1vw,9.5px);line-height:1.55;color:#222;
+}
+.np-cols-2{grid-template-columns:1fr 1fr}
+.np-col-head{
+  font-weight:700;font-size:clamp(7px,.85vw,9px);text-transform:uppercase;
+  letter-spacing:.05em;color:#1A1A1A;
+  border-top:2px solid #1A1A1A;padding-top:3px;margin-bottom:4px;
+}
+.np-col-rule{border-left:1px solid #ccc;padding-left:8px}
+.np-kicker{
+  font-family:var(--mono);font-size:clamp(6px,.75vw,8px);
+  text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:2px;
+}
+.np-story-head{
+  font-family:var(--serif);font-size:clamp(9px,1.3vw,13px);
+  font-weight:700;line-height:1.15;margin-bottom:4px;
+}
+.np-body{font-size:clamp(6.5px,.9vw,9px);line-height:1.55;color:#333}
+.np-rule-h{border:none;border-top:1px solid #bbb;margin:6px 0}
+.np-stat-boxes{display:flex;gap:6px;margin:6px 0}
+.np-stat-box{
+  flex:1;background:#1A1A1A;color:#F5EDD8;
+  padding:6px 8px;text-align:center;
+  border-radius:2px;
+}
+.np-stat-box .num{
+  font-family:var(--serif);font-size:clamp(18px,2.5vw,28px);
+  font-weight:900;color:#E8922A;display:block;line-height:1;
+}
+.np-stat-box .lbl{
+  font-family:var(--mono);font-size:clamp(6px,.7vw,8px);
+  letter-spacing:.1em;text-transform:uppercase;color:#aaa;
+}
+.np-back-cta{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;padding:24px;text-align:center;
+  background:#0A1912;color:#F5EDD8;
+}
+.np-back-cta .big{
+  font-family:var(--serif);font-size:clamp(20px,3vw,36px);
+  font-weight:900;line-height:1.1;margin-bottom:12px;color:#E8922A;
+}
+.np-back-cta p{font-size:clamp(10px,1.3vw,13px);line-height:1.6;color:#A08B6A;margin-bottom:20px;max-width:280px}
+.np-back-cta .cta-btn{
+  display:inline-block;padding:10px 22px;
+  background:#E8922A;color:#0A1912;
+  font-family:var(--sans);font-size:12px;font-weight:700;
+  text-decoration:none;border-radius:3px;letter-spacing:.04em;
+  margin-bottom:8px;
+}
 
 /* ── TOPICS ── */
-#topics { padding:100px 0; }
-.orbit-wrap {
-  position:relative; height:500px;
-  display:flex; align-items:center; justify-content:center;
+#topics{
+  position:relative;z-index:2;
+  padding:100px 24px;
+  border-top:1px solid var(--rule);
 }
-.oc {
-  position:absolute; width:112px; height:112px; border-radius:50%;
-  background:linear-gradient(135deg,var(--saffron),var(--gold));
-  display:flex; align-items:center; justify-content:center; z-index:10;
-  box-shadow:0 0 60px rgba(232,146,42,.35);
-  animation:ocP 5s ease-in-out infinite alternate;
+.topics-header{text-align:center;margin-bottom:60px}
+.topics-header h2{
+  font-family:var(--serif);font-size:clamp(36px,5vw,60px);
+  font-weight:900;line-height:1;color:var(--ivory);margin-bottom:16px;
 }
-@keyframes ocP { from{box-shadow:0 0 40px rgba(232,146,42,.3)} to{box-shadow:0 0 80px rgba(93,191,138,.35)} }
-.oc-text { font-family:var(--serif); font-size:26px; font-weight:900; color:var(--bg); }
-.or1,.or2 { position:absolute; border-radius:50%; border:1px dashed rgba(255,255,255,.06); }
-.or1 { width:260px; height:260px; animation:spin 28s linear infinite; }
-.or2 { width:450px; height:450px; animation:spin 45s linear infinite reverse; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.chip {
-  position:absolute; padding:8px 15px;
-  background:rgba(10,25,18,.92); border:1px solid var(--rule); border-radius:100px;
-  font-size:12.5px; font-weight:500; white-space:nowrap;
-  backdrop-filter:blur(10px); cursor:default;
-  transition:border-color .3s,background .3s,transform .3s;
+.topics-header h2 em{color:var(--saffron);font-style:italic}
+.topics-header p{font-size:16px;color:var(--ivory3);max-width:520px;margin:0 auto}
+.topics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:0;
+  max-width:1200px;margin:0 auto;
+  border:1px solid var(--rule);
 }
-.chip:hover { border-color:var(--saffron); background:rgba(232,146,42,.1); transform:scale(1.06); }
+.topic-card{
+  padding:32px 28px;
+  border:1px solid var(--rule);
+  position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.topic-card:hover{background:rgba(232,146,42,.04)}
+.topic-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--color,var(--saffron));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.topic-card:hover::before{transform:scaleX(1)}
+.topic-num{
+  font-family:var(--mono);font-size:10px;color:var(--color,var(--saffron));
+  letter-spacing:.1em;margin-bottom:12px;
+}
+.topic-icon{font-size:28px;margin-bottom:12px;display:block}
+.topic-name{
+  font-family:var(--serif);font-size:20px;font-weight:700;
+  color:var(--ivory);margin-bottom:8px;
+}
+.topic-desc{font-size:13px;line-height:1.6;color:var(--ivory3)}
 
-/* ── QUOTE WALL ── */
-#quotes { padding:100px 0; }
-.quotes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-.qcard {
-  background:var(--bg2); border:1px solid var(--rule); border-radius:18px;
-  padding:30px 26px; display:flex; flex-direction:column; gap:16px;
-  transition:border-color .3s,transform .3s;
-  position:relative; overflow:hidden;
+/* ── HOW IT WORKS ── */
+#how{
+  position:relative;z-index:2;
+  padding:100px 24px;
+  border-top:1px solid var(--rule);
+  max-width:1100px;margin:0 auto;
 }
-.qcard::before {
-  content:'\201C';
-  position:absolute; top:-10px; left:16px;
-  font-family:var(--serif); font-size:100px; line-height:1;
-  color:rgba(232,146,42,.08); pointer-events:none;
+.how-header{text-align:center;margin-bottom:60px}
+.how-header h2{
+  font-family:var(--serif);font-size:clamp(36px,5vw,56px);
+  font-weight:700;color:var(--ivory);margin-bottom:12px;
 }
-.qcard:hover { border-color:rgba(232,146,42,.3); transform:translateY(-4px); }
-.qtext {
-  font-family:var(--serif); font-size:17px; font-style:italic;
-  line-height:1.55; color:var(--ivory); flex:1;
+.how-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2px;
 }
-.qmeta { display:flex; flex-direction:column; gap:3px; }
-.qsrc { font-family:var(--mono); font-size:10px; letter-spacing:.8px; text-transform:uppercase; color:var(--saffron); }
-.qdate { font-size:11.5px; color:var(--ivory3); }
-.qtag {
-  align-self:flex-start;
-  font-size:10px; letter-spacing:.7px; text-transform:uppercase; font-weight:700;
-  padding:3px 10px; border-radius:100px;
-  background:rgba(93,191,138,.1); color:var(--green);
+@media(max-width:700px){.how-steps{grid-template-columns:1fr}}
+.how-step{
+  padding:48px 36px;
+  background:rgba(14,32,24,.6);
+  border:1px solid var(--rule);
+  text-align:center;
+  transition:background .3s;
 }
-
-/* ── ABOUT EDITOR ── */
-#editor { padding:100px 0; }
-.editor-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:72px; align-items:center; }
-.editor-card {
-  background:var(--bg2); border:1px solid var(--rule); border-radius:24px;
-  padding:40px 36px; display:flex; flex-direction:column; align-items:center;
-  text-align:center; gap:16px; position:relative; overflow:hidden;
+.how-step:hover{background:rgba(93,191,138,.05)}
+.step-num{
+  font-family:var(--serif);font-size:80px;font-weight:900;
+  color:rgba(232,146,42,.12);line-height:1;margin-bottom:16px;
+  display:block;
 }
-.editor-card::before {
-  content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%);
-  width:280px; height:180px;
-  background:radial-gradient(ellipse,rgba(232,146,42,.12),transparent 70%);
-  pointer-events:none;
+.step-icon{font-size:36px;margin-bottom:16px;display:block}
+.step-title{
+  font-family:var(--serif);font-size:22px;font-weight:700;
+  color:var(--ivory);margin-bottom:12px;
 }
-.editor-avatar {
-  width:88px; height:88px; border-radius:50%;
-  background:linear-gradient(135deg,var(--saffron),var(--gold));
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--serif); font-size:36px; font-weight:900; color:var(--bg);
-  box-shadow:0 0 0 6px rgba(232,146,42,.12);
-  position:relative; z-index:1;
-}
-.editor-name { font-family:var(--serif); font-size:22px; font-weight:700; }
-.editor-role { font-size:13px; color:var(--ivory3); font-family:var(--mono); letter-spacing:.5px; }
-.editor-pills { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
-.epill {
-  font-size:11px; padding:5px 12px; border-radius:100px;
-  background:rgba(232,146,42,.08); border:1px solid rgba(232,146,42,.2); color:var(--ivory2);
-}
-.editor-links { display:flex; gap:12px; margin-top:4px; }
-.elink {
-  padding:9px 18px; border-radius:100px; font-size:13px; font-weight:600;
-  text-decoration:none; transition:transform .2s,box-shadow .2s;
-}
-.elink.li { background:rgba(0,119,181,.12); color:#5AADE0; border:1px solid rgba(0,119,181,.25); }
-.elink.li:hover { background:rgba(0,119,181,.2); transform:scale(1.03); }
-.elink.ig { background:rgba(225,48,108,.08); color:#F07DA0; border:1px solid rgba(225,48,108,.2); }
-.elink.ig:hover { background:rgba(225,48,108,.15); transform:scale(1.03); }
-
-.editor-content {}
-.editor-h2 { font-family:var(--serif); font-size:clamp(30px,3.5vw,46px); font-weight:900; line-height:1.1; letter-spacing:-1.5px; margin:14px 0 22px; }
-.editor-p { font-size:15.5px; color:var(--ivory2); line-height:1.75; margin-bottom:20px; }
-.editor-values { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
-.ev {
-  display:flex; align-items:center; gap:12px;
-  padding:13px 16px; background:rgba(255,255,255,.02);
-  border:1px solid var(--rule); border-radius:10px;
-  font-size:14px; color:var(--ivory2);
-  transition:border-color .3s,background .3s;
-}
-.ev:hover { border-color:rgba(93,191,138,.3); background:rgba(93,191,138,.04); }
-.ev-icon { font-size:18px; }
-
-/* ── READER WALL ── */
-#readers { padding:100px 0; background:linear-gradient(180deg,transparent,rgba(93,191,138,.03) 50%,transparent); }
-.reader-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.rcard {
-  background:var(--bg2); border:1px solid var(--rule); border-radius:16px;
-  padding:24px 22px; display:flex; flex-direction:column; gap:14px;
-  transition:border-color .3s,transform .3s;
-}
-.rcard:hover { border-color:rgba(93,191,138,.25); transform:translateY(-3px); }
-.rcard-top { display:flex; align-items:center; gap:11px; }
-.ravatar {
-  width:44px; height:44px; border-radius:50%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--serif); font-size:18px; font-weight:700; color:var(--bg);
-}
-.rname { font-size:14px; font-weight:600; }
-.rtitle { font-size:12px; color:var(--ivory3); }
-.rbadge {
-  margin-left:auto; font-size:9px; padding:3px 9px; border-radius:100px; font-weight:700;
-  background:rgba(0,119,181,.1); color:#5AADE0; border:1px solid rgba(0,119,181,.2);
-  white-space:nowrap;
-}
-.rtext { font-size:14px; color:var(--ivory2); line-height:1.6; }
-.rstars { color:var(--gold); font-size:13px; letter-spacing:2px; }
-
-/* ── ARCHIVE TEASER ── */
-#archive { padding:100px 0; }
-.archive-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:20px; }
-.acard {
-  background:var(--bg2); border:1px solid var(--rule); border-radius:16px;
-  padding:24px 22px; display:flex; flex-direction:column; gap:12px;
-  transition:border-color .3s,transform .3s,box-shadow .3s; text-decoration:none; color:var(--ivory);
-}
-.acard:hover { border-color:rgba(232,146,42,.35); transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,.4); }
-.acard-date { font-family:var(--mono); font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--saffron); }
-.acard-hed { font-family:var(--serif); font-size:17px; font-weight:700; line-height:1.25; }
-.acard-stats { display:flex; gap:8px; flex-wrap:wrap; }
-.astat { font-size:11px; padding:4px 10px; border-radius:100px; background:rgba(255,255,255,.04); border:1px solid var(--rule); color:var(--ivory2); }
-.acard-arrow { font-family:var(--mono); font-size:11px; color:var(--ivory3); margin-top:auto; transition:color .2s; }
-.acard:hover .acard-arrow { color:var(--saffron); }
-.archive-cta { text-align:center; margin-top:36px; }
+.step-desc{font-size:14px;line-height:1.7;color:var(--ivory3)}
 
 /* ── CTA ── */
-#cta { padding:120px 0; }
-.cta-box {
-  background:linear-gradient(135deg,rgba(232,146,42,.09) 0%,rgba(93,191,138,.06) 100%);
-  border:1px solid rgba(232,146,42,.22); border-radius:28px;
-  padding:76px 60px; text-align:center; position:relative; overflow:hidden;
+#cta{
+  position:relative;z-index:2;
+  padding:120px 24px;
+  text-align:center;
+  border-top:1px solid var(--rule);
+  overflow:hidden;
 }
-.cta-box::before {
-  content:''; position:absolute; top:-120px; left:50%; transform:translateX(-50%);
-  width:700px; height:350px;
-  background:radial-gradient(ellipse,rgba(232,146,42,.12),transparent 70%); pointer-events:none;
+.cta-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,146,42,.08) 0%,transparent 70%);
+  pointer-events:none;
 }
-.cta-h2 { font-family:var(--serif); font-size:clamp(36px,5vw,62px); font-weight:900; line-height:1.05; letter-spacing:-2px; margin:14px 0 18px; position:relative; z-index:1; }
-.cta-sub { font-size:17px; color:var(--ivory2); max-width:500px; margin:0 auto 44px; line-height:1.65; position:relative; z-index:1; }
-.cta-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; position:relative; z-index:1; }
-.cta-feats { display:flex; gap:26px; justify-content:center; flex-wrap:wrap; margin-top:24px; position:relative; z-index:1; }
-.cfeat { display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ivory2); }
-.cfeat::before {
-  content:'✓'; width:19px; height:19px; border-radius:50%;
-  background:rgba(93,191,138,.12); color:var(--green); font-size:10px; font-weight:700;
-  display:flex; align-items:center; justify-content:center;
+.cta-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--saffron);margin-bottom:20px;
 }
+.cta-head{
+  font-family:var(--serif);font-size:clamp(40px,6vw,72px);
+  font-weight:900;line-height:1;color:var(--ivory);margin-bottom:16px;
+}
+.cta-head em{color:var(--saffron);font-style:italic}
+.cta-sub{
+  font-size:18px;color:var(--ivory3);margin-bottom:48px;max-width:480px;
+  display:inline-block;line-height:1.7;
+}
+.cta-btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
 
-/* ── SOCIAL LINKS ── */
-#links { padding:80px 0; }
-.links-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.lcard {
-  display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;
-  padding:36px 26px; background:var(--bg2); border:1px solid var(--rule); border-radius:20px;
-  text-decoration:none; color:var(--ivory);
-  transition:border-color .3s,transform .3s,box-shadow .3s; position:relative; overflow:hidden;
+/* ── SOCIAL ── */
+#social{
+  position:relative;z-index:2;
+  padding:80px 24px;
+  border-top:1px solid var(--rule);
+  max-width:900px;margin:0 auto;
 }
-.lcard::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .3s; }
-.lcard.li::before { background:radial-gradient(circle at 50% 0,rgba(0,119,181,.15),transparent 70%); }
-.lcard.ig::before { background:radial-gradient(circle at 50% 0,rgba(225,48,108,.12),transparent 70%); }
-.lcard.web::before { background:radial-gradient(circle at 50% 0,rgba(232,146,42,.12),transparent 70%); }
-.lcard:hover { transform:translateY(-5px); }
-.lcard:hover::before { opacity:1; }
-.lcard.li:hover { border-color:rgba(0,119,181,.4); box-shadow:0 20px 60px rgba(0,119,181,.12); }
-.lcard.ig:hover { border-color:rgba(225,48,108,.35); box-shadow:0 20px 60px rgba(225,48,108,.1); }
-.lcard.web:hover { border-color:rgba(232,146,42,.4); box-shadow:0 20px 60px rgba(232,146,42,.12); }
-.licon { width:58px; height:58px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:26px; }
-.lcard.li .licon { background:rgba(0,119,181,.1); }
-.lcard.ig .licon { background:rgba(225,48,108,.08); }
-.lcard.web .licon { background:rgba(232,146,42,.1); }
-.ltitle { font-family:var(--serif); font-size:19px; font-weight:700; }
-.ldesc { font-size:13.5px; color:var(--ivory2); line-height:1.5; }
-.larrow { font-size:12px; color:var(--ivory3); font-family:var(--mono); margin-top:auto; transition:color .3s; }
-.lcard:hover .larrow { color:var(--saffron); }
+.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+@media(max-width:600px){.social-grid{grid-template-columns:1fr}}
+.social-card{
+  padding:36px 28px;
+  border:1px solid var(--rule);
+  background:rgba(14,32,24,.5);
+  text-align:center;
+  text-decoration:none;
+  transition:background .3s,transform .3s;
+  display:block;cursor:none;
+}
+.social-card:hover{background:rgba(232,146,42,.06);transform:translateY(-4px)}
+.social-icon{font-size:36px;margin-bottom:14px;display:block}
+.social-name{
+  font-family:var(--serif);font-size:18px;font-weight:700;
+  color:var(--ivory);margin-bottom:6px;
+}
+.social-handle{font-family:var(--mono);font-size:11px;color:var(--saffron);letter-spacing:.05em}
 
 /* ── FOOTER ── */
-footer {
-  position:relative; z-index:2; border-top:1px solid var(--rule);
-  padding:44px 36px; max-width:1160px; margin:0 auto;
-  display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;
+footer{
+  position:relative;z-index:2;
+  padding:48px 24px 32px;
+  border-top:1px solid var(--rule);
+  text-align:center;
 }
-.foot-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
-.foot-mark { width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,var(--saffron),var(--gold)); display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-weight:900; font-size:16px; color:var(--bg); }
-.foot-text .f1 { font-family:var(--serif); font-size:14px; color:var(--ivory); }
-.foot-text .f2 { font-size:9px; color:var(--ivory3); letter-spacing:2px; text-transform:uppercase; }
-.foot-copy { font-size:12px; color:var(--ivory3); }
-.foot-links { display:flex; gap:18px; }
-.foot-links a { font-size:12px; color:var(--ivory3); text-decoration:none; transition:color .2s; }
-.foot-links a:hover { color:var(--saffron); }
+.footer-logo{
+  font-family:var(--serif);font-size:28px;font-weight:900;
+  color:var(--ivory);margin-bottom:8px;
+}
+.footer-logo span{color:var(--saffron)}
+.footer-tagline{
+  font-family:var(--serif);font-style:italic;
+  font-size:14px;color:var(--ivory3);margin-bottom:24px;
+}
+.footer-links{
+  display:flex;flex-wrap:wrap;gap:24px;justify-content:center;
+  margin-bottom:24px;
+}
+.footer-links a{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ivory3);text-decoration:none;cursor:none;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--saffron)}
+.footer-copy{font-size:12px;color:rgba(160,139,106,.5)}
 
-/* ── PARTICLES ── */
-.pcont { position:fixed; inset:0; z-index:1; pointer-events:none; overflow:hidden; }
-.cp {
-  position:absolute; border-radius:50%; opacity:0;
-  animation:fp var(--dur,20s) var(--delay,0s) ease-in-out infinite;
-}
-@keyframes fp { 0%{opacity:0;transform:translateY(100vh) scale(0)} 10%{opacity:var(--op,.4)} 90%{opacity:var(--op,.4)} 100%{opacity:0;transform:translateY(-8vh) scale(1) translateX(var(--dx,20px))} }
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
 
-/* ── RESPONSIVE ── */
-@media(max-width:960px){
-  nav { padding:14px 20px; }
-  nav.scrolled { padding:10px 20px; }
-  .about-grid,.editor-grid { grid-template-columns:1fr; gap:44px; }
-  .mockup { transform:none; }
-  .flip-grid { grid-template-columns:repeat(2,1fr); }
-  .steps::before { display:none; }
-  .steps { grid-template-columns:1fr; }
-  .quotes-grid,.reader-grid,.links-grid,.archive-grid { grid-template-columns:1fr 1fr; }
-  .stats-row { grid-template-columns:repeat(2,1fr); }
-  .orbit-wrap { height:380px; }
-  .or2 { width:340px; height:340px; }
-  .cta-box { padding:48px 26px; }
+/* ── MOBILE NEWSPAPER FALLBACK ── */
+@media(max-width:600px){
+  #newspaper{height:auto}
+  .np-sticky{position:relative;height:auto;padding:40px 16px}
+  .np-book-wrap{display:none}
+  .np-heading{position:static;transform:none;margin-bottom:24px;display:block;text-align:center}
+  .np-progress-bar{display:none}
+  .np-mobile-cards{display:flex!important}
 }
-@media(max-width:620px){
-  .flip-grid,.quotes-grid,.reader-grid,.links-grid,.archive-grid { grid-template-columns:1fr; }
-  .hero-btns,.cta-btns { flex-direction:column; align-items:center; }
-  footer { flex-direction:column; align-items:flex-start; }
-  .nav-links .nav-link { display:none; }
+.np-mobile-cards{
+  display:none;
+  flex-direction:column;gap:16px;width:100%;max-width:480px;
 }
+.np-mobile-card{background:#F5EDD8;color:#1A1A1A;padding:24px;border-radius:4px}
 </style>
 </head>
 <body>
 
-<canvas id="canvas-bg"></canvas>
-<div class="pcont" id="pcont"></div>
-<div class="cursor" id="cur"></div>
-<div class="cursor-ring" id="curR"></div>
-
-<!-- NAV -->
-<nav id="nav">
-  <a class="nav-brand" href="#">
-    <div class="nav-mark">M</div>
-    <div class="nav-text"><div class="t1">MBA India Daily</div><div class="t2">Business Intelligence</div></div>
-  </a>
-  <div class="nav-links">
-    <a class="nav-link" href="#about">About</a>
-    <a class="nav-link" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
-    <a class="nav-link" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Instagram</a>
-    <a class="btn-nav" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Today's Edition →</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-eyebrow" id="hEye"><span class="pdot"></span> Live · Thursday Edition · 25 June 2026</div>
-  <h1 class="hero-h1" id="hH1">
-    India's Markets,<br><em class="grad">Decoded</em><br>Every Morning.
-  </h1>
-  <p class="hero-sub" id="hSub">
-    The daily intelligence briefing built for MBA students and future managers — connecting global events to India's economy, markets, and your career.
-  </p>
-  <div class="hero-btns" id="hBtns">
-    <a class="btn-primary" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Read Today's Edition →</a>
-    <a class="btn-outline" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">Follow on LinkedIn</a>
-  </div>
-  <p class="hero-note" id="hNote">New edition drops every morning. <span>Free forever.</span></p>
-  <div class="hero-badges" id="hBadges">
-    <div class="badge"><span class="bdot" style="background:var(--saffron)"></span>India Economy</div>
-    <div class="badge"><span class="bdot" style="background:var(--green)"></span>Markets &amp; Finance</div>
-    <div class="badge"><span class="bdot" style="background:var(--gold)"></span>Business Strategy</div>
-    <div class="badge"><span class="bdot" style="background:var(--red)"></span>AI &amp; Tech</div>
-    <div class="badge"><span class="bdot" style="background:#7AA0FF"></span>Startups</div>
-    <div class="badge"><span class="bdot" style="background:var(--ivory3)"></span>Career Insights</div>
-  </div>
-  <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
-</section>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<canvas id="bg-canvas"></canvas>
 
 <!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-inner" id="tick">
-    <span class="ti"><span class="ic">◆</span> Sensex Analysis</span>
-    <span class="ti"><span class="ic">◆</span> RBI Policy Watch</span>
-    <span class="ti"><span class="ic">◆</span> India GDP Insights</span>
-    <span class="ti"><span class="ic">◆</span> Startup Funding Rounds</span>
-    <span class="ti"><span class="ic">◆</span> Global → India Impact</span>
-    <span class="ti"><span class="ic">◆</span> Supply Chain Intelligence</span>
-    <span class="ti"><span class="ic">◆</span> Marketing Deep Dives</span>
-    <span class="ti"><span class="ic">◆</span> HR &amp; Leadership</span>
-    <span class="ti"><span class="ic">◆</span> Manager Takeaways</span>
-    <span class="ti"><span class="ic">◆</span> Industry Heat Maps</span>
-    <span class="ti"><span class="ic">◆</span> Connection Maps</span>
-    <span class="ti"><span class="ic">◆</span> Career Intelligence</span>
-    <span class="ti"><span class="ic">◆</span> Sensex Analysis</span>
-    <span class="ti"><span class="ic">◆</span> RBI Policy Watch</span>
-    <span class="ti"><span class="ic">◆</span> India GDP Insights</span>
-    <span class="ti"><span class="ic">◆</span> Startup Funding Rounds</span>
-    <span class="ti"><span class="ic">◆</span> Global → India Impact</span>
-    <span class="ti"><span class="ic">◆</span> Supply Chain Intelligence</span>
-    <span class="ti"><span class="ic">◆</span> Marketing Deep Dives</span>
-    <span class="ti"><span class="ic">◆</span> HR &amp; Leadership</span>
-    <span class="ti"><span class="ic">◆</span> Manager Takeaways</span>
-    <span class="ti"><span class="ic">◆</span> Industry Heat Maps</span>
-    <span class="ti"><span class="ic">◆</span> Connection Maps</span>
-    <span class="ti"><span class="ic">◆</span> Career Intelligence</span>
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span>📰 MBA India Daily</span>
+    <span>◆ India Business</span>
+    <span>◆ Economy &amp; Markets</span>
+    <span>◆ Finance &amp; Banking</span>
+    <span>◆ Tech &amp; AI</span>
+    <span>◆ Marketing</span>
+    <span>◆ HR &amp; Careers</span>
+    <span>◆ Startups &amp; VC</span>
+    <span>◆ Operations</span>
+    <span>◆ Strategy &amp; Consulting</span>
+    <span>◆ Global Business</span>
+    <span>◆ Policy &amp; Regulation</span>
+    <span>◆ Data &amp; Analytics</span>
+    <span>📰 MBA India Daily</span>
+    <span>◆ India Business</span>
+    <span>◆ Economy &amp; Markets</span>
+    <span>◆ Finance &amp; Banking</span>
+    <span>◆ Tech &amp; AI</span>
+    <span>◆ Marketing</span>
+    <span>◆ HR &amp; Careers</span>
+    <span>◆ Startups &amp; VC</span>
+    <span>◆ Operations</span>
+    <span>◆ Strategy &amp; Consulting</span>
+    <span>◆ Global Business</span>
+    <span>◆ Policy &amp; Regulation</span>
+    <span>◆ Data &amp; Analytics</span>
   </div>
 </div>
 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">India's Premier MBA Newsletter</div>
+  <h1 class="hero-logo">MBA<span>India</span>Daily</h1>
+  <p class="hero-tagline">Think Sharper. Lead Smarter.</p>
+  <p class="hero-desc reveal">One newsletter. Every business topic that matters. Curated daily for India's MBA community — students, managers, and leaders.</p>
+  <div class="hero-btns reveal reveal-delay-1">
+    <a href="https://mbaindiadailyblog.vercel.app/" class="btn btn-primary" target="_blank">📖 Read Today's Edition</a>
+    <a href="https://www.linkedin.com/company/mbaindiadaily/" class="btn btn-outline" target="_blank">in Follow on LinkedIn</a>
+    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" class="btn btn-ghost" target="_blank">📷 Instagram</a>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
 <!-- STATS -->
 <section id="stats">
-  <div class="wrap">
-    <div class="stats-row">
-      <div class="sc reveal"><div class="sv" data-count="12" data-suf="+">0+</div><div class="sl">In-depth sections<br>every single day</div></div>
-      <div class="sc reveal" style="animation-delay:.1s"><div class="sv" data-count="30" data-suf="+">0+</div><div class="sl">Business stories<br>curated &amp; analysed</div></div>
-      <div class="sc reveal" style="animation-delay:.2s"><div class="sv" data-count="5" data-suf="+">0+</div><div class="sl">Manager insights<br>per edition</div></div>
-      <div class="sc reveal" style="animation-delay:.3s"><div class="sv">Free</div><div class="sl">Always free for<br>MBA students</div></div>
+  <div class="stats-grid">
+    <div class="stat-cell reveal">
+      <span class="stat-num" data-target="12">0</span>
+      <span class="stat-label">Sections Daily</span>
+    </div>
+    <div class="stat-cell reveal reveal-delay-1">
+      <span class="stat-num" data-target="30" data-suffix="+">0</span>
+      <span class="stat-label">Stories Per Edition</span>
+    </div>
+    <div class="stat-cell reveal reveal-delay-2">
+      <span class="stat-num" data-target="5" data-suffix="+">0</span>
+      <span class="stat-label">Insights Per Topic</span>
+    </div>
+    <div class="stat-cell reveal reveal-delay-3">
+      <span class="stat-num">Free</span>
+      <span class="stat-label">Always Free</span>
     </div>
   </div>
 </section>
 
 <!-- ABOUT -->
 <section id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="mockup-wrap reveal">
-        <div class="mockup-glow"></div>
-        <div class="mockup">
-          <div class="m-bar">
-            <div class="m-dots"><div class="md" style="background:#FF5F57"></div><div class="md" style="background:#FFBD2E"></div><div class="md" style="background:#28CA41"></div></div>
-            <div class="m-url">mbaindiadailyblog.vercel.app</div>
-          </div>
-          <div class="m-body">
-            <div class="m-hed">Micron beat Wall Street by ₹5 lakh crore overnight. India's monsoon is 43% below normal.</div>
-            <div class="m-stats">
-              <div class="mst"><div class="mv">$41B</div><div class="ml">Micron Revenue</div></div>
-              <div class="mst"><div class="mv" style="color:var(--red)">−43%</div><div class="ml">Monsoon Deficit</div></div>
-              <div class="mst"><div class="mv" style="color:var(--saffron)">+777</div><div class="ml">Sensex Points</div></div>
-            </div>
-            <div class="m-cards">
-              <div class="mc"><div class="mc-tag">Finance</div><div class="mc-t">Bajaj Auto ₹15,000 Cr buyback — management confidence signal</div></div>
-              <div class="mc"><div class="mc-tag">AI &amp; Tech</div><div class="mc-t">Agentic AI enters bancassurance — India's first autonomous platform</div></div>
-              <div class="mc"><div class="mc-tag">Startups</div><div class="mc-t">Maya Research: 3M downloads, voice-first AI for India</div></div>
-              <div class="mc"><div class="mc-tag">HR &amp; Career</div><div class="mc-t">PSU banking is a genuine career option again</div></div>
-            </div>
-          </div>
+  <div class="about-text reveal">
+    <h2>Business news built for <em>India's next leaders</em></h2>
+    <p>Every morning, MBA India Daily delivers a structured, comprehensive briefing across 12 business domains — from macroeconomics to marketing, from AI disruption to HR strategy.</p>
+    <p>No paywalls. No fluff. Just the insight you need to walk into any boardroom conversation prepared.</p>
+    <div class="hero-btns" style="margin-top:32px;justify-content:flex-start">
+      <a href="https://mbaindiadailyblog.vercel.app/" class="btn btn-primary" target="_blank">Read Today's Edition →</a>
+    </div>
+  </div>
+  <div class="about-mockup reveal reveal-delay-1">
+    <div class="mockup-card">
+      <div class="mockup-masthead">MBA INDIA DAILY</div>
+      <div class="mockup-dateline">Vol. I &nbsp;·&nbsp; India's Business Intelligence Briefing &nbsp;·&nbsp; Free</div>
+      <div class="mockup-hl">RBI holds repo rate at 6.5% — markets brace for Q2 earnings season with cautious optimism</div>
+      <div class="mockup-cols">
+        <div>
+          <div class="mockup-col-head">Economy</div>
+          India's GDP growth revised upward to 7.2% for FY25 as manufacturing PMI hits 57.5, strongest reading in 16 months...
         </div>
-      </div>
-      <div>
-        <p class="eyebrow reveal">What is MBA India Daily</p>
-        <h2 class="about-h2 reveal">Not just news.<br><span class="grad">Intelligence.</span></h2>
-        <p class="about-p reveal">Most business news tells you what happened. MBA India Daily tells you why it matters, how it connects to everything else, and what it means for your career and investments.</p>
-        <div class="flist">
-          <div class="fi reveal">
-            <div class="fi-icon" style="background:rgba(232,146,42,.1)">📊</div>
-            <div><strong>Why It Matters + Manager Takeaway</strong><span>Every story comes with two boxes: the real-world implication and the strategic lesson you can apply immediately.</span></div>
-          </div>
-          <div class="fi reveal" style="animation-delay:.1s">
-            <div class="fi-icon" style="background:rgba(93,191,138,.1)">🔗</div>
-            <div><strong>Connection Maps</strong><span>See how two unrelated events combine into one powerful compound insight.</span></div>
-          </div>
-          <div class="fi reveal" style="animation-delay:.2s">
-            <div class="fi-icon" style="background:rgba(201,168,76,.1)">🗺️</div>
-            <div><strong>Industry Heat Maps</strong><span>Interactive sector analysis — Growing, Stable, Under Pressure — with drivers and what to watch.</span></div>
-          </div>
-          <div class="fi reveal" style="animation-delay:.3s">
-            <div class="fi-icon" style="background:rgba(93,191,138,.08)">🎯</div>
-            <div><strong>Career Intelligence</strong><span>Every section ends with a career implication — because what you know shapes where you go.</span></div>
-          </div>
+        <div>
+          <div class="mockup-col-head">Markets</div>
+          Sensex crosses 82,000 milestone as FII inflows surge ₹12,400 Cr in a single week. Mid-cap rally continues...
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FLIP CARDS -->
-<section id="inside">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">What's Inside</p>
-    <h2 class="sec-title reveal" style="text-align:center">Flip to explore</h2>
-    <p class="sec-sub reveal">Each section is a different lens on the same day. Hover any card to see what's inside.</p>
-    <div class="flip-grid">
-      <div class="flip reveal">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">01 / 06</div><div class="femoji">📰</div><div class="ft">Top Stories</div><div class="fd">The 6 biggest business events every MBA student needs to know — with manager takeaways.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>6 deeply analysed stories</li><li>Why it matters box</li><li>Manager takeaway box</li><li>Causal flow diagram</li><li>Source attribution</li></ul></div>
+<!-- NEWSPAPER SCROLL SECTION -->
+<section id="newspaper">
+  <div class="np-sticky" id="np-sticky">
+    <span class="np-heading">◆ Scroll to turn pages ◆</span>
+
+    <div class="np-book-wrap">
+      <div class="np-book" id="np-book">
+
+        <!-- LEFT BASE (always visible, fills as pages turn) -->
+        <div class="np-left-base">
+          <div class="np-left-content">
+            <div class="lc-masthead">MBA INDIA DAILY</div>
+            <div class="lc-tagline">India's Business Intelligence Briefing</div>
+            <div class="lc-body">
+              <div>
+                <div class="lc-col-head">Top Story</div>
+                India's startup ecosystem mints 3 new unicorns this quarter as global VCs increase India allocation by 40%...
+                <hr style="border:none;border-top:1px solid #ccc;margin:6px 0">
+                RBI Governor signals accommodative stance through FY26 as inflation stays within target band...
+              </div>
+              <div>
+                <div class="lc-col-head">Markets</div>
+                Nifty50 closes at record high. Banking stocks lead rally. IT sector sees selective buying ahead of Q3 results...
+                <hr style="border:none;border-top:1px solid #ccc;margin:6px 0">
+                Gold hits ₹72,000/10g. Crude at $84. Rupee strengthens to 83.2 against dollar...
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flip reveal" style="animation-delay:.08s">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">02 / 06</div><div class="femoji">🇮🇳</div><div class="ft">India Economy &amp; Global Impact</div><div class="fd">Macro signals, RBI policy, inflation data, and how the world reshapes India's economic story.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>India Economy deep dives</li><li>Global → India analysis</li><li>Policy interpretation</li><li>Consumer-level impact</li><li>Leading indicators</li></ul></div>
+
+        <!-- PAGE 0: Cover → Top Stories -->
+        <div class="np-page" id="page-0" style="z-index:8">
+          <div class="np-front">
+            <div class="np-page-inner">
+              <div class="np-masthead">MBA INDIA DAILY</div>
+              <div class="np-dateline">
+                <span>Est. 2024 · Vol. I</span>
+                <span>India's Business Intelligence Briefing</span>
+                <span>Free · Daily</span>
+              </div>
+              <div class="np-headline">India's Economy Surges: GDP Revised to 7.2%, Manufacturing at 16-Month High</div>
+              <div class="np-subhead">Markets rally, RBI holds steady, and the startup ecosystem delivers three new unicorns this quarter</div>
+              <div class="np-stat-boxes">
+                <div class="np-stat-box"><span class="num">12</span><span class="lbl">Sections</span></div>
+                <div class="np-stat-box"><span class="num">30+</span><span class="lbl">Stories</span></div>
+                <div class="np-stat-box"><span class="num">5+</span><span class="lbl">Insights</span></div>
+              </div>
+              <div class="np-cols">
+                <div>
+                  <div class="np-col-head">Economy</div>
+                  <div class="np-body">India's GDP growth revised upward to 7.2% for FY25 as manufacturing PMI hits 57.5. Finance Ministry cites robust consumption and export recovery as primary drivers. IMF upgrades India outlook.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Markets</div>
+                  <div class="np-body">Sensex closes at 82,340. FII inflows of ₹12,400 Cr in a week signal sustained confidence. Mid-cap index outperforms large-cap for 6th consecutive week. PSU banks lead gains.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Policy</div>
+                  <div class="np-body">RBI holds repo rate at 6.5% for 5th consecutive meeting. Governor signals readiness to cut if inflation sustains below 4.5% target. Liquidity window extended for NBFCs.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="np-back">
+            <div class="np-page-inner">
+              <div class="np-masthead">TOP STORIES</div>
+              <div class="np-dateline">
+                <span>India Business</span>
+                <span>Today's Briefing</span>
+                <span>Page 2</span>
+              </div>
+              <div class="np-cols np-cols-2" style="flex:1">
+                <div>
+                  <div class="np-kicker">Finance</div>
+                  <div class="np-story-head">HDFC Bank Q3 net profit rises 18% YoY; asset quality improves as GNPA falls to 1.24%</div>
+                  <div class="np-body">Strong retail loan growth and improved margins drive outperformance. Analysts upgrade target to ₹1,950.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Startups</div>
+                  <div class="np-story-head">Zepto raises $350M Series F at $5B valuation — quick commerce wars intensify</div>
+                  <div class="np-body">Tiger Global leads round. Blinkit and Swiggy Instamart respond with delivery time cuts and dark store expansion.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Tech</div>
+                  <div class="np-story-head">Reliance Jio launches AI-powered 5G enterprise suite targeting 2,000 corporates</div>
+                  <div class="np-body">JioAI platform integrates with Salesforce, SAP. Ambani targets ₹10,000 Cr B2B revenue by FY26.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-kicker">HR &amp; Careers</div>
+                  <div class="np-story-head">IIM Ahmedabad placement: Average CTC hits ₹34.1 LPA, consulting firms dominate</div>
+                  <div class="np-body">BCG, McKinsey, Bain make 47 combined offers. Fintech emerges as surprise second-largest recruiter.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Global</div>
+                  <div class="np-story-head">Apple shifts 25% of iPhone production to India — Tamil Nadu and Karnataka benefit</div>
+                  <div class="np-body">Foxconn and Tata Electronics ramp up capacity. India emerges as Apple's second-largest manufacturing hub.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Policy</div>
+                  <div class="np-story-head">PLI scheme for electronics surpasses ₹1.2 lakh Cr in production milestone</div>
+                  <div class="np-body">32 companies qualify for incentive disbursement. Semiconductor PLI extension announced for FY27-FY32.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flip reveal" style="animation-delay:.16s">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">03 / 06</div><div class="femoji">💰</div><div class="ft">Finance &amp; Markets</div><div class="fd">Buybacks, IPOs, PE exits, M&amp;A, and everything that moves capital — explained clearly.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>Market event analysis</li><li>Investment mechanics</li><li>Deal commentary</li><li>Finance manager lens</li><li>Consumer finance angle</li></ul></div>
+
+        <!-- PAGE 1: Economy/Finance → Tech/Marketing -->
+        <div class="np-page" id="page-1" style="z-index:7">
+          <div class="np-front">
+            <div class="np-page-inner">
+              <div class="np-masthead">ECONOMY &amp; MARKETS</div>
+              <div class="np-dateline">
+                <span>Macro Briefing</span>
+                <span>Finance &amp; Banking</span>
+                <span>Page 3</span>
+              </div>
+              <div class="np-cols" style="flex:1">
+                <div>
+                  <div class="np-col-head">Macro</div>
+                  <div class="np-kicker">RBI Policy</div>
+                  <div class="np-story-head">Inflation cools to 4.87% — rate cut window opens for April MPC</div>
+                  <div class="np-body">Core inflation at 3.9%. Food prices moderate as winter crop supply improves. Economists price in 25bps cut.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Fiscal</div>
+                  <div class="np-story-head">India's fiscal deficit at 4.9% of GDP — on track for 4.5% FY26 target</div>
+                  <div class="np-body">GST collections at ₹1.87 lakh Cr, second highest ever. Divestment pipeline of ₹51,000 Cr accelerated.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Markets</div>
+                  <div class="np-kicker">Equities</div>
+                  <div class="np-story-head">Nifty Bank at all-time high; infra &amp; defence stocks surge on budget outlay boost</div>
+                  <div class="np-body">₹11.1 lakh Cr capex target drives momentum. L&amp;T, BHEL, HAL up 8-15% in 30 days.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">IPO Watch</div>
+                  <div class="np-story-head">OYO, PhysicsWallah, ixigo file DRHPs — 2024's IPO pipeline swells to ₹80,000 Cr</div>
+                  <div class="np-body">SEBI fast-tracks confidential filings. Secondary market strength supports primary market optimism.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Banking</div>
+                  <div class="np-kicker">Credit</div>
+                  <div class="np-story-head">Bank credit growth at 16.5% YoY — retail and MSME drive expansion</div>
+                  <div class="np-body">Home loans grow 19%. MSME credit up 22%. RBI tightens unsecured personal loan norms after concern over overleveraging.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Fintech</div>
+                  <div class="np-story-head">UPI crosses 15 billion transactions in a single month — global expansion accelerates</div>
+                  <div class="np-body">NPCI signs agreements with France, UAE, Singapore. RuPay cards accepted in 30+ countries. CBDC pilot expands to 50 cities.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="np-back">
+            <div class="np-page-inner">
+              <div class="np-masthead">TECH &amp; MARKETING</div>
+              <div class="np-dateline">
+                <span>Technology</span>
+                <span>AI · Digital Marketing</span>
+                <span>Page 4</span>
+              </div>
+              <div class="np-cols np-cols-2" style="flex:1">
+                <div>
+                  <div class="np-col-head">Tech &amp; AI</div>
+                  <div class="np-kicker">AI Adoption</div>
+                  <div class="np-story-head">India's enterprise AI spend to hit $6B by 2027 — TCS, Infosys race for AI leadership</div>
+                  <div class="np-body">Generative AI projects surge 340% YoY. Healthcare, BFSI, and retail lead enterprise deployments.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Cloud</div>
+                  <div class="np-story-head">AWS, Azure, Google Cloud invest ₹1.5 lakh Cr in India data centre infrastructure</div>
+                  <div class="np-body">Hyperscaler expansion supports India's digital public infrastructure ambitions. Edge computing emerges as next frontier.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Regulation</div>
+                  <div class="np-story-head">Digital Personal Data Protection Act rules notified — DPDP compliance deadline set</div>
+                  <div class="np-body">Companies have 18 months to appoint Data Protection Officers. Fines up to ₹250 Cr for violations.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Marketing</div>
+                  <div class="np-kicker">D2C</div>
+                  <div class="np-story-head">India's D2C market to reach $100B by 2025 — Mamaearth, boAt lead the charge</div>
+                  <div class="np-body">ONDC enables discovery across 6 lakh+ sellers. Social commerce accounts for 30% of D2C revenues.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Digital Ad</div>
+                  <div class="np-story-head">India's digital advertising market crosses ₹50,000 Cr — programmatic and CTV surge</div>
+                  <div class="np-body">Google and Meta retain 65% share. JioAds and ShareChat grow at 80%+ YoY. Influencer marketing now at ₹3,500 Cr.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Consumer</div>
+                  <div class="np-story-head">Premiumisation wave: India's HNI consumer base grows 11% — luxury goods market at ₹85,000 Cr</div>
+                  <div class="np-body">LVMH, Hermès, BMW expand India footprint. Domestic premium brands like Titan, Tanishq capture aspirational tier.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flip reveal" style="animation-delay:.24s">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">04 / 06</div><div class="femoji">🤖</div><div class="ft">Tech, AI &amp; Startups</div><div class="fd">AI investments, startup funding, emerging tech — and the future jobs they are creating right now.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>AI industry analysis</li><li>Indian startup raises</li><li>Future jobs section</li><li>Business opportunity maps</li><li>Founder lessons</li></ul></div>
+
+        <!-- PAGE 2: HR/Startups → Operations/Strategy -->
+        <div class="np-page" id="page-2" style="z-index:6">
+          <div class="np-front">
+            <div class="np-page-inner">
+              <div class="np-masthead">HR &amp; STARTUPS</div>
+              <div class="np-dateline">
+                <span>Human Capital</span>
+                <span>Entrepreneurship · Venture Capital</span>
+                <span>Page 5</span>
+              </div>
+              <div class="np-cols np-cols-2" style="flex:1">
+                <div>
+                  <div class="np-col-head">HR &amp; Careers</div>
+                  <div class="np-kicker">Hiring</div>
+                  <div class="np-story-head">India Inc to hire 8 lakh freshers in FY25 — IT sector leads with 3.2 lakh openings</div>
+                  <div class="np-body">Hiring rebounds after 2023 slowdown. GCCs emerge as top employers. AI/ML roles command 40-60% premium.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Leadership</div>
+                  <div class="np-story-head">Women in C-suite: India Inc hits 18% representation — still behind global 29% benchmark</div>
+                  <div class="np-body">SEBI mandates at least one woman independent director. Top 500 BSE companies show faster progress than SMEs.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Future of Work</div>
+                  <div class="np-story-head">Hybrid work model now permanent at 68% of Indian enterprises</div>
+                  <div class="np-body">Co-working space bookings up 45%. WeWork, IndiQube, Smartworks report record occupancy. Tier-2 cities gain talent.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Startups &amp; VC</div>
+                  <div class="np-kicker">Funding</div>
+                  <div class="np-story-head">India startup funding recovers to $12B in 2024 — fintech and climate tech lead verticals</div>
+                  <div class="np-body">Sequoia, Accel, Lightspeed increase India allocations. Government's ₹10,000 Cr Fund of Funds disburses third tranche.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">New Unicorns</div>
+                  <div class="np-story-head">IndiGrid, HealthifyMe, Zetwerk join unicorn club — India's roster hits 117 unicorns</div>
+                  <div class="np-body">India ranks 3rd globally by unicorn count. Bangalore, Delhi NCR and Mumbai host 80% of unicorns.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Exits</div>
+                  <div class="np-story-head">Startup IPO boom: 14 tech companies list in 2024 with average 42% listing day gain</div>
+                  <div class="np-body">Swiggy, Ola Electric, FirstCry lead the cohort. Secondary market provides liquidity for early-stage investors.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="np-back">
+            <div class="np-page-inner">
+              <div class="np-masthead">OPERATIONS &amp; STRATEGY</div>
+              <div class="np-dateline">
+                <span>Supply Chain</span>
+                <span>Consulting · Global Business</span>
+                <span>Page 6</span>
+              </div>
+              <div class="np-cols" style="flex:1">
+                <div>
+                  <div class="np-col-head">Operations</div>
+                  <div class="np-kicker">Supply Chain</div>
+                  <div class="np-story-head">India's logistics cost falls to 8.9% of GDP — still above global benchmark of 6%</div>
+                  <div class="np-body">PM GatiShakti drives multimodal integration. Dedicated Freight Corridors reduce average transit time by 30%.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Manufacturing</div>
+                  <div class="np-story-head">India's EV manufacturing capacity triples — Tata, M&amp;M, Ola lead the charge</div>
+                  <div class="np-body">Battery gigafactories under construction in Pune, Bangalore, Hyderabad. Local content norms drive component ecosystem.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Strategy</div>
+                  <div class="np-kicker">Consulting</div>
+                  <div class="np-story-head">Big Three consulting firms double India headcount — strategy work moves onshore</div>
+                  <div class="np-body">McKinsey, BCG, Bain collectively at 12,000 India staff. GCC model extends to consulting delivery centres.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">M&amp;A</div>
+                  <div class="np-story-head">India M&amp;A deals hit $80B in 2024 — banking consolidation wave builds</div>
+                  <div class="np-body">Inbound M&amp;A from Japan, South Korea and Singapore. Outbound acquisitions by TCS, Wipro in Europe and North America.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Global</div>
+                  <div class="np-kicker">Trade</div>
+                  <div class="np-story-head">India-UK FTA finalised after 3 years — ₹2 lakh Cr trade expected by 2030</div>
+                  <div class="np-body">Tariff reductions on 90% of goods. Services chapter covers mobility, financial services, legal. India-EU FTA next milestone.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Geopolitics</div>
+                  <div class="np-story-head">India benefits as companies diversify from China — 200+ MNCs set up India operations in 18 months</div>
+                  <div class="np-body">Electronics, chemicals, textiles lead the shift. India's English-speaking workforce and IP protection cited as key advantages.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="flip reveal" style="animation-delay:.32s">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">05 / 06</div><div class="femoji">🔗</div><div class="ft">Connection Map</div><div class="fd">Watch two events combine into one compound insight you'd never see in isolation.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>3 event-pair chains</li><li>Combined impact analysis</li><li>Cross-domain thinking</li><li>The through-line insight</li><li>Systems-level reasoning</li></ul></div>
+
+        <!-- PAGE 3: Data/Analytics → Back CTA -->
+        <div class="np-page" id="page-3" style="z-index:5">
+          <div class="np-front">
+            <div class="np-page-inner">
+              <div class="np-masthead">DATA &amp; ANALYTICS</div>
+              <div class="np-dateline">
+                <span>Technology</span>
+                <span>Business Intelligence · Research</span>
+                <span>Page 7</span>
+              </div>
+              <div class="np-cols" style="flex:1">
+                <div>
+                  <div class="np-col-head">Data Economy</div>
+                  <div class="np-kicker">Analytics Market</div>
+                  <div class="np-story-head">India's analytics industry to reach $16B by 2026 — 1.5 lakh new jobs projected</div>
+                  <div class="np-body">BFSI, pharma, retail lead adoption. Tier-2 cities like Pune, Hyderabad, Chennai emerge as analytics hubs.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">GenAI in Business</div>
+                  <div class="np-story-head">CXOs report 28% productivity gain from Gen AI tools — but ethical concerns remain</div>
+                  <div class="np-body">Copilot, Gemini, Claude adopted by 60% of Fortune 500 India subsidiaries. Boards debate AI governance frameworks.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Research</div>
+                  <div class="np-kicker">India Rankings</div>
+                  <div class="np-story-head">India jumps to 40th in Global Innovation Index — IP filings hit record 90,000 in FY24</div>
+                  <div class="np-body">IITs, IISc, and startups drive patent growth. Government's IP awareness campaigns credited for SME filings surge.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">ESG</div>
+                  <div class="np-story-head">SEBI's BRSR Core reporting now mandatory for top 1,000 listed companies</div>
+                  <div class="np-body">Assurance on ESG disclosures required. Investors demand climate transition plans. Green bonds market grows to ₹35,000 Cr.</div>
+                </div>
+                <div class="np-col-rule">
+                  <div class="np-col-head">Education</div>
+                  <div class="np-kicker">MBA Trends</div>
+                  <div class="np-story-head">IIM applications up 22% — Tier-2 MBAs embrace specialised programmes in data, sustainability</div>
+                  <div class="np-body">Online MBA enrolments triple post-pandemic. UGC's new framework enables dual degrees. Industry-academia partnerships expand.</div>
+                  <hr class="np-rule-h">
+                  <div class="np-kicker">Skills</div>
+                  <div class="np-story-head">India's skilling gap: 10 crore workers need reskilling by 2030 — PM Kaushal Vikas expands</div>
+                  <div class="np-body">AI literacy, green skills, and advanced manufacturing top the priority list. Industry-government partnership models scale.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="np-back">
+            <div class="np-back-cta">
+              <div class="big">Every Story.<br>Every Day.<br>Free.</div>
+              <p>MBA India Daily brings you comprehensive business intelligence across every domain that matters for India's next generation of leaders.</p>
+              <a href="https://mbaindiadailyblog.vercel.app/" class="cta-btn" target="_blank">📖 Read Today's Edition</a>
+              <br><br>
+              <a href="https://www.linkedin.com/company/mbaindiadaily/" class="cta-btn" style="background:#0077B5;color:#fff" target="_blank">in Follow on LinkedIn</a>
+            </div>
+          </div>
         </div>
+
+      </div><!-- /np-book -->
+    </div><!-- /np-book-wrap -->
+
+    <!-- Mobile fallback -->
+    <div class="np-mobile-cards">
+      <div class="np-mobile-card">
+        <div style="font-family:var(--serif);font-size:20px;font-weight:900;border-bottom:2px solid #1A1A1A;margin-bottom:8px;padding-bottom:6px">MBA INDIA DAILY</div>
+        <p style="font-size:14px;line-height:1.6;color:#333">India's Economy Surges: GDP at 7.2%, Manufacturing at 16-month high. 12 sections, 30+ stories — free every day.</p>
       </div>
-      <div class="flip reveal" style="animation-delay:.4s">
-        <div class="flip-inner">
-          <div class="ff"><div class="fn">06 / 06</div><div class="femoji">🧠</div><div class="ft">Manager's Takeaways</div><div class="fd">5 philosophical insights extracted from the day's news — with direct career and business application.</div></div>
-          <div class="fb"><div class="fbt">What you get</div><ul class="fbl"><li>5 deep insights per day</li><li>Business philosophy</li><li>Career applications</li><li>Investment frameworks</li><li>Quote of the day</li></ul></div>
-        </div>
+      <div class="np-mobile-card">
+        <div style="font-family:var(--serif);font-size:15px;font-weight:700;margin-bottom:8px">Economy · Finance · Markets</div>
+        <p style="font-size:13px;line-height:1.6;color:#333">RBI policy decisions, stock market moves, fintech disruption, UPI milestones — covered every morning.</p>
       </div>
+      <div class="np-mobile-card">
+        <div style="font-family:var(--serif);font-size:15px;font-weight:700;margin-bottom:8px">Tech · HR · Startups · Strategy</div>
+        <p style="font-size:13px;line-height:1.6;color:#333">AI adoption, hiring trends, unicorn funding rounds, M&amp;A deals — everything your MBA curriculum covers, daily.</p>
+      </div>
+    </div>
+
+    <div class="np-progress-bar"><div class="np-progress-fill" id="np-fill"></div></div>
+  </div>
+</section>
+
+<!-- EVERY TOPIC EVERY DAY -->
+<section id="topics">
+  <div class="topics-header reveal">
+    <h2>Every Topic,<br><em>Every Day</em></h2>
+    <p>Twelve sections. Comprehensive coverage. Nothing left out.</p>
+  </div>
+  <div class="topics-grid">
+    <div class="topic-card reveal" style="--color:#E8922A">
+      <div class="topic-num">01</div>
+      <span class="topic-icon">🏦</span>
+      <div class="topic-name">India Economy</div>
+      <div class="topic-desc">GDP, inflation, fiscal policy, RBI decisions, and macro trends shaping India's growth story.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-1" style="--color:#5DBF8A">
+      <div class="topic-num">02</div>
+      <span class="topic-icon">📈</span>
+      <div class="topic-name">Markets</div>
+      <div class="topic-desc">Sensex, Nifty, FII flows, sector rotation, IPOs, and investment opportunities across asset classes.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-2" style="--color:#C9A84C">
+      <div class="topic-num">03</div>
+      <span class="topic-icon">💳</span>
+      <div class="topic-name">Finance &amp; Banking</div>
+      <div class="topic-desc">Credit growth, NPA trends, fintech disruption, UPI milestones, and NBFC developments.</div>
+    </div>
+    <div class="topic-card reveal" style="--color:#D95F4B">
+      <div class="topic-num">04</div>
+      <span class="topic-icon">🤖</span>
+      <div class="topic-name">Tech &amp; AI</div>
+      <div class="topic-desc">Enterprise AI adoption, cloud infrastructure, digital transformation, and India's tech product ecosystem.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-1" style="--color:#E8922A">
+      <div class="topic-num">05</div>
+      <span class="topic-icon">📣</span>
+      <div class="topic-name">Marketing</div>
+      <div class="topic-desc">D2C brands, digital advertising, consumer behavior, brand strategy, and social commerce trends.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-2" style="--color:#5DBF8A">
+      <div class="topic-num">06</div>
+      <span class="topic-icon">👥</span>
+      <div class="topic-name">HR &amp; Careers</div>
+      <div class="topic-desc">Hiring trends, compensation benchmarks, future of work, leadership, and MBA campus placements.</div>
+    </div>
+    <div class="topic-card reveal" style="--color:#C9A84C">
+      <div class="topic-num">07</div>
+      <span class="topic-icon">🚀</span>
+      <div class="topic-name">Startups &amp; VC</div>
+      <div class="topic-desc">Funding rounds, unicorn updates, founder stories, VC thesis shifts, and startup ecosystem policy.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-1" style="--color:#D95F4B">
+      <div class="topic-num">08</div>
+      <span class="topic-icon">⚙️</span>
+      <div class="topic-name">Operations</div>
+      <div class="topic-desc">Supply chain, manufacturing, logistics, process optimization, and India's infrastructure build-out.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-2" style="--color:#E8922A">
+      <div class="topic-num">09</div>
+      <span class="topic-icon">♟️</span>
+      <div class="topic-name">Strategy</div>
+      <div class="topic-desc">Corporate strategy, M&amp;A, consulting insights, competitive dynamics, and business model innovation.</div>
+    </div>
+    <div class="topic-card reveal" style="--color:#5DBF8A">
+      <div class="topic-num">10</div>
+      <span class="topic-icon">🌍</span>
+      <div class="topic-name">Global Business</div>
+      <div class="topic-desc">FDI flows, trade agreements, geopolitics impact on business, and India's global positioning.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-1" style="--color:#C9A84C">
+      <div class="topic-num">11</div>
+      <span class="topic-icon">📊</span>
+      <div class="topic-name">Data &amp; Analytics</div>
+      <div class="topic-desc">Business intelligence, data-driven decisions, analytics trends, and India's data economy growth.</div>
+    </div>
+    <div class="topic-card reveal reveal-delay-2" style="--color:#D95F4B">
+      <div class="topic-num">12</div>
+      <span class="topic-icon">📋</span>
+      <div class="topic-name">Policy &amp; Regulation</div>
+      <div class="topic-desc">Government initiatives, regulatory changes, compliance updates, and policy impact on Indian business.</div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section id="how">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">How It Works</p>
-    <h2 class="sec-title reveal" style="text-align:center">Dead simple.</h2>
-    <p class="sec-sub reveal" style="max-width:380px">Three steps between you and India's sharpest daily business briefing.</p>
-    <div class="steps">
-      <div class="step reveal"><div class="snum">1</div><h3>Follow Us</h3><p>Follow MBA India Daily on LinkedIn or Instagram — each new edition is posted every morning.</p></div>
-      <div class="step reveal" style="animation-delay:.15s"><div class="snum">2</div><h3>Click the Link</h3><p>We share a unique link with every post. One tap opens the full intelligence briefing.</p></div>
-      <div class="step reveal" style="animation-delay:.3s"><div class="snum">3</div><h3>Think Differently</h3><p>Start connecting dots others miss. Build the mental models that make managers extraordinary.</p></div>
-    </div>
+  <div class="how-header reveal">
+    <h2>How to Get MBA India Daily</h2>
   </div>
-</section>
-
-<!-- TOPICS -->
-<section id="topics">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">Every Topic, Every Day</p>
-    <h2 class="sec-title reveal" style="text-align:center">12 sections.<br><span class="grad">One briefing.</span></h2>
-    <p class="sec-sub reveal">We cover the full spectrum of business intelligence every single morning.</p>
-    <div class="orbit-wrap reveal">
-      <div class="or1"></div><div class="or2"></div>
-      <div class="oc"><div class="oc-text">MID</div></div>
-      <div class="chip" style="top:20%;left:70%">📰 Top Stories</div>
-      <div class="chip" style="top:68%;left:67%">🇮🇳 India Economy</div>
-      <div class="chip" style="top:76%;left:18%">🌐 Global Impact</div>
-      <div class="chip" style="top:20%;left:10%">💰 Finance</div>
-      <div class="chip" style="top:4%;left:40%">📣 Marketing</div>
-      <div class="chip" style="top:44%;left:82%">⚙️ Operations</div>
-      <div class="chip" style="top:88%;left:52%">👥 HR &amp; Leadership</div>
-      <div class="chip" style="top:88%;left:14%">🤖 Tech &amp; AI</div>
-      <div class="chip" style="top:44%;left:1%">🚀 Startups</div>
-      <div class="chip" style="top:3%;left:12%">🔗 Connection Map</div>
-      <div class="chip" style="top:3%;left:64%">🗺️ Heat Map</div>
-      <div class="chip" style="top:55%;left:48%;transform:translateX(-50%)">🧠 Takeaways</div>
+  <div class="how-steps">
+    <div class="how-step reveal">
+      <span class="step-num">01</span>
+      <span class="step-icon">👆</span>
+      <div class="step-title">Follow on LinkedIn</div>
+      <div class="step-desc">Follow MBA India Daily on LinkedIn. Every morning, a new edition goes live as a post with a unique link.</div>
     </div>
-  </div>
-</section>
-
-<!-- QUOTE WALL -->
-<section id="quotes">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">Manager's Wisdom</p>
-    <h2 class="sec-title reveal" style="text-align:center">Insights that stay<br><span class="grad">with you.</span></h2>
-    <p class="sec-sub reveal">A taste of the Manager's Takeaway section — the philosophical core of every edition.</p>
-    <div class="quotes-grid">
-      <div class="qcard reveal">
-        <div class="qtag">Finance</div>
-        <div class="qtext">"When a company collects $22 billion in prepayments from customers desperate to secure supply, that is the most reliable revenue a business can have. The most valuable position in any supply chain is 'irreplaceable bottleneck.'"</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — Micron Analysis</div></div>
-      </div>
-      <div class="qcard reveal" style="animation-delay:.1s">
-        <div class="qtag">Strategy</div>
-        <div class="qtext">"Markets price fast variables immediately and slow variables too late. A monsoon deficit in June becomes a food bill shock in October. The manager who builds this lag into their planning cycle is not being pessimistic — they are being precise."</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — Monsoon Analysis</div></div>
-      </div>
-      <div class="qcard reveal" style="animation-delay:.2s">
-        <div class="qtag">Career</div>
-        <div class="qtext">"Most disagreements about a business are not about facts — they are about time horizons. A 6-month view and a 5-year view of the same sector can produce opposite conclusions while both being correct."</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — IT Sector</div></div>
-      </div>
-      <div class="qcard reveal" style="animation-delay:.1s">
-        <div class="qtag">Leadership</div>
-        <div class="qtext">"In regulated industries, your relationship with your regulator is not a compliance cost — it is a business-critical asset that takes years to build and can be destroyed in a single quarter."</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — YES Bank vs Paytm</div></div>
-      </div>
-      <div class="qcard reveal" style="animation-delay:.2s">
-        <div class="qtag">Investing</div>
-        <div class="qtext">"Every major transaction is a signal from an informed party about where they believe value lies. Decoding who is selling, why they are selling, and what price they are accepting tells you more than the transaction price itself."</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — IRFC &amp; Bajaj Auto</div></div>
-      </div>
-      <div class="qcard reveal" style="animation-delay:.3s">
-        <div class="qtag">Career</div>
-        <div class="qtext">"The professional equivalent of a prepayment is when an organisation changes its plans to retain you rather than letting you go. Build toward irreplaceability, not indispensability through volume of work."</div>
-        <div class="qmeta"><div class="qsrc">Manager's Takeaway</div><div class="qdate">25 June 2026 — Career Intelligence</div></div>
-      </div>
+    <div class="how-step reveal reveal-delay-1">
+      <span class="step-num">02</span>
+      <span class="step-icon">🔗</span>
+      <div class="step-title">Click the Link</div>
+      <div class="step-desc">Each post contains a direct link to that day's full newsletter. One click — full access, no paywall, no signup.</div>
     </div>
-  </div>
-</section>
-
-<!-- ABOUT EDITOR -->
-<section id="editor">
-  <div class="wrap">
-    <div class="editor-grid">
-      <div class="editor-card reveal">
-        <div class="editor-avatar">S</div>
-        <div class="editor-name">Sameer Shakya</div>
-        <div class="editor-role">Founder &amp; Editor · MBA India Daily</div>
-        <div class="editor-pills">
-          <span class="epill">MBA Student</span>
-          <span class="epill">Business Intelligence</span>
-          <span class="epill">Markets &amp; Strategy</span>
-          <span class="epill">Jaipuria Institute</span>
-        </div>
-        <div class="editor-links">
-          <a class="elink li" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="elink ig" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Instagram</a>
-        </div>
-      </div>
-      <div class="editor-content">
-        <p class="eyebrow reveal">The Person Behind the Brief</p>
-        <h2 class="editor-h2 reveal">Written by a student,<br><span class="grad">for students.</span></h2>
-        <p class="editor-p reveal">MBA India Daily was born from a simple frustration: business news was either too shallow to learn from, or too technical to understand without a Bloomberg terminal. There was nothing built specifically for the MBA student — someone who needs to understand both the headline and the strategic implication behind it.</p>
-        <p class="editor-p reveal">So I built it myself. Every edition is researched, written, and published daily — connecting global events to India's economy, with a manager's lens on every story.</p>
-        <div class="editor-values">
-          <div class="ev reveal"><span class="ev-icon">🎯</span> Every story has a "why it matters" and a career takeaway — not just facts</div>
-          <div class="ev reveal" style="animation-delay:.08s"><span class="ev-icon">🔗</span> Cross-domain connections that you won't find in any single news source</div>
-          <div class="ev reveal" style="animation-delay:.16s"><span class="ev-icon">📅</span> Published daily — because the market doesn't take days off, and neither do we</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- READER WALL -->
-<section id="readers">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">Reader Voices</p>
-    <h2 class="sec-title reveal" style="text-align:center">What readers are<br><span class="grad">saying.</span></h2>
-    <p class="sec-sub reveal">From MBA students to working professionals — here's the impact in their own words.</p>
-    <div class="reader-grid">
-      <div class="rcard reveal">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#E8922A,#C9A84C)">A</div>
-          <div><div class="rname">Ananya Sharma</div><div class="rtitle">MBA Student, IIM Lucknow</div></div>
-          <div class="rbadge">LinkedIn</div>
-        </div>
-        <div class="rtext">"Finally a newsletter that doesn't just tell me what happened but actually explains why it matters for my career. The Manager Takeaway section is gold. I read it before every case study discussion."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-      <div class="rcard reveal" style="animation-delay:.1s">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#5DBF8A,#3DA870)">R</div>
-          <div><div class="rname">Rahul Mehta</div><div class="rtitle">Finance Associate, Mumbai</div></div>
-          <div class="rbadge">LinkedIn</div>
-        </div>
-        <div class="rtext">"The Connection Map section is something I've never seen any other newsletter do. Watching two events from different industries create one combined insight — it genuinely changes how I think about macro."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-      <div class="rcard reveal" style="animation-delay:.2s">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#7AA0FF,#5580E0)">P</div>
-          <div><div class="rname">Priya Nair</div><div class="rtitle">MBA Aspirant, Bangalore</div></div>
-          <div class="rbadge">Instagram</div>
-        </div>
-        <div class="rtext">"I started reading MBAIndiaDaily while preparing for my CAT. The Industry Heat Map section alone made me understand sector analysis better than any textbook. Also — the design is stunning."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-      <div class="rcard reveal" style="animation-delay:.1s">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#D95F4B,#C04A38)">K</div>
-          <div><div class="rname">Karan Verma</div><div class="rtitle">Strategy Analyst, Delhi</div></div>
-          <div class="rbadge">LinkedIn</div>
-        </div>
-        <div class="rtext">"Most newsletters give you 10 news bullets. MBA India Daily gives you 10 insights. There's a fundamental difference and you feel it from the first read. The monsoon-to-inflation chain analysis was exceptional."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-      <div class="rcard reveal" style="animation-delay:.2s">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#C9A84C,#A88830)">S</div>
-          <div><div class="rname">Shreya Patel</div><div class="rtitle">MBA Student, XLRI</div></div>
-          <div class="rbadge">Instagram</div>
-        </div>
-        <div class="rtext">"I forward the Manager Takeaway section to my entire study group every morning. The insight about time horizons in the JPMorgan vs Nilekani story was the best piece of investment thinking I've read this year."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-      <div class="rcard reveal" style="animation-delay:.3s">
-        <div class="rcard-top">
-          <div class="ravatar" style="background:linear-gradient(135deg,#5DBF8A,#C9A84C)">V</div>
-          <div><div class="rname">Vikram Rao</div><div class="rtitle">Product Manager, Bengaluru</div></div>
-          <div class="rbadge">LinkedIn</div>
-        </div>
-        <div class="rtext">"I've been in the industry 4 years and I still learn something new every morning from this newsletter. The depth of India-specific context is something you just can't get from international publications."</div>
-        <div class="rstars">★★★★★</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ARCHIVE -->
-<section id="archive">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:14px">Past Editions</p>
-    <h2 class="sec-title reveal" style="text-align:center">Every morning,<br><span class="grad">archived.</span></h2>
-    <p class="sec-sub reveal">Browse recent editions — each one a full intelligence briefing on the day it was published.</p>
-    <div class="archive-grid">
-      <a class="acard reveal" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">
-        <div class="acard-date">Thursday · 25 June 2026</div>
-        <div class="acard-hed">Micron beat Wall Street by ₹5 lakh crore. India's monsoon is 43% below normal.</div>
-        <div class="acard-stats"><span class="astat">AI Memory</span><span class="astat">Monsoon Risk</span><span class="astat">IRFC OFS</span></div>
-        <div class="acard-arrow">Read full edition →</div>
-      </a>
-      <a class="acard reveal" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener" style="animation-delay:.08s">
-        <div class="acard-date">Wednesday · 24 June 2026</div>
-        <div class="acard-hed">Sensex fell 893 points. JPMorgan downgraded three IT names. And the RBI gave banks a new tool.</div>
-        <div class="acard-stats"><span class="astat">Market Crash</span><span class="astat">IT Sector</span><span class="astat">RBI Policy</span></div>
-        <div class="acard-arrow">Read full edition →</div>
-      </a>
-      <a class="acard reveal" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener" style="animation-delay:.16s">
-        <div class="acard-date">Tuesday · 23 June 2026</div>
-        <div class="acard-hed">India's defence exports quadrupled in 3 years. And the India-UK startup corridor just deepened.</div>
-        <div class="acard-stats"><span class="astat">Defence</span><span class="astat">Startups</span><span class="astat">Diplomacy</span></div>
-        <div class="acard-arrow">Read full edition →</div>
-      </a>
-    </div>
-    <div class="archive-cta reveal">
-      <a class="btn-outline" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Browse All Editions →</a>
+    <div class="how-step reveal reveal-delay-2">
+      <span class="step-num">03</span>
+      <span class="step-icon">🧠</span>
+      <div class="step-title">Think Differently</div>
+      <div class="step-desc">Walk into every class, case study, and interview armed with India's most complete business briefing.</div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
 <section id="cta">
-  <div class="wrap">
-    <div class="cta-box reveal">
-      <p class="eyebrow" style="justify-content:center;margin-bottom:18px">Start Today</p>
-      <h2 class="cta-h2">The market doesn't wait.<br><span class="grad">Neither should you.</span></h2>
-      <p class="cta-sub">Follow on LinkedIn or Instagram to get each edition the moment it drops — every morning, free.</p>
-      <div class="cta-btns">
-        <a class="btn-primary" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Read Today's Edition →</a>
-        <a class="btn-outline" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">Follow on LinkedIn</a>
-        <a class="btn-outline" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Follow on Instagram</a>
-      </div>
-      <div class="cta-feats">
-        <span class="cfeat">Free forever</span>
-        <span class="cfeat">New edition every morning</span>
-        <span class="cfeat">No sign-up needed</span>
-        <span class="cfeat">Just follow &amp; read</span>
-      </div>
-    </div>
+  <div class="cta-glow"></div>
+  <div class="cta-eyebrow reveal">Start Reading Today</div>
+  <h2 class="cta-head reveal reveal-delay-1">Be the most<br><em>informed person</em><br>in the room.</h2>
+  <p class="cta-sub reveal reveal-delay-2">Free. Daily. Comprehensive. The only business newsletter built specifically for India's MBA ecosystem.</p>
+  <div class="cta-btns reveal reveal-delay-3">
+    <a href="https://mbaindiadailyblog.vercel.app/" class="btn btn-primary" target="_blank">📖 Read Today's Edition</a>
+    <a href="https://www.linkedin.com/company/mbaindiadaily/" class="btn btn-outline" target="_blank">in Follow on LinkedIn</a>
+    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" class="btn btn-ghost" target="_blank">📷 Follow on Instagram</a>
   </div>
 </section>
 
-<!-- LINKS -->
-<section id="links">
-  <div class="wrap">
-    <p class="eyebrow reveal" style="justify-content:center;margin-bottom:16px">Find Us</p>
-    <div class="links-grid">
-      <a class="lcard li reveal" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">
-        <div class="licon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" stroke="#5AADE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4" cy="4" r="2" stroke="#5AADE0" stroke-width="2"/></svg>
-        </div>
-        <div class="ltitle">LinkedIn</div>
-        <div class="ldesc">Business updates, insights, and behind-the-scenes from the newsletter.</div>
-        <div class="larrow">@mbaindiadaily →</div>
-      </a>
-      <a class="lcard ig reveal" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener" style="animation-delay:.1s">
-        <div class="licon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig)" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="url(#ig)" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/><defs><linearGradient id="ig" x1="2" y1="22" x2="22" y2="2"><stop offset="0%" stop-color="#F58529"/><stop offset="50%" stop-color="#E1306C"/><stop offset="100%" stop-color="#833AB4"/></linearGradient></defs></svg>
-        </div>
-        <div class="ltitle">Instagram</div>
-        <div class="ldesc">Daily visual cards, market stat drops, and quick story breakdowns.</div>
-        <div class="larrow">@mbaindiadaily →</div>
-      </a>
-      <a class="lcard web reveal" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener" style="animation-delay:.2s">
-        <div class="licon">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E8922A" stroke-width="2"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="#E8922A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="ltitle">Today's Edition</div>
-        <div class="ldesc">Read the live daily edition — fresh every morning with full intelligence briefing.</div>
-        <div class="larrow">mbaindiadailyblog.vercel.app →</div>
-      </a>
-    </div>
+<!-- SOCIAL -->
+<section id="social">
+  <div class="social-grid">
+    <a href="https://www.linkedin.com/company/mbaindiadaily/" class="social-card reveal" target="_blank">
+      <span class="social-icon">💼</span>
+      <div class="social-name">LinkedIn</div>
+      <div class="social-handle">@mbaindiadaily</div>
+    </a>
+    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" class="social-card reveal reveal-delay-1" target="_blank">
+      <span class="social-icon">📷</span>
+      <div class="social-name">Instagram</div>
+      <div class="social-handle">@mbaindiadaily</div>
+    </a>
+    <a href="https://mbaindiadailyblog.vercel.app/" class="social-card reveal reveal-delay-2" target="_blank">
+      <span class="social-icon">📰</span>
+      <div class="social-name">Live Edition</div>
+      <div class="social-handle">Read Today →</div>
+    </a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <a class="foot-brand" href="#">
-    <div class="foot-mark">M</div>
-    <div class="foot-text"><div class="f1">MBA India Daily</div><div class="f2">Business Intelligence</div></div>
-  </a>
-  <div class="foot-copy">© 2026 MBA India Daily · Built for Future Managers</div>
-  <div class="foot-links">
-    <a href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Today's Edition</a>
-    <a href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Instagram</a>
+  <div class="footer-logo">MBA<span>India</span>Daily</div>
+  <div class="footer-tagline">Think Sharper. Lead Smarter.</div>
+  <div class="footer-links">
+    <a href="https://mbaindiadailyblog.vercel.app/" target="_blank">Today's Edition</a>
+    <a href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank">LinkedIn</a>
+    <a href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank">Instagram</a>
+    <a href="#topics">Topics</a>
+    <a href="#how">How It Works</a>
   </div>
+  <div class="footer-copy">© 2024 MBA India Daily · India's Premier MBA Business Newsletter · Made with ♥ for India's next leaders</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 <script>
-/* ── THREE.JS ── */
+// ── THREE.JS BACKGROUND ──
 (function(){
-  const canvas=document.getElementById('canvas-bg');
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  renderer.setSize(innerWidth,innerHeight);
-  renderer.setClearColor(0,0);
-  const scene=new THREE.Scene();
-  const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);
-  cam.position.z=30;
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
 
-  // particles
-  const N=1000, pos=new Float32Array(N*3), col=new Float32Array(N*3);
-  const pal=[[.91,.569,.165],[.365,.749,.54],[.788,.659,.298],[.847,.373,.294]];
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.1, 1000);
+  camera.position.z = 30;
+
+  const pal = [
+    [.91,.569,.165],
+    [.365,.749,.54],
+    [.788,.659,.298],
+    [.847,.373,.294]
+  ];
+
+  const pGeo = new THREE.BufferGeometry();
+  const N = 1800;
+  const pos = new Float32Array(N*3), col = new Float32Array(N*3);
   for(let i=0;i<N;i++){
-    const i3=i*3,r=38+Math.random()*28;
-    const t=Math.random()*Math.PI*2,p=Math.acos(2*Math.random()-1);
-    pos[i3]=r*Math.sin(p)*Math.cos(t); pos[i3+1]=r*Math.sin(p)*Math.sin(t); pos[i3+2]=r*Math.cos(p);
-    const c=pal[i%pal.length]; col[i3]=c[0]; col[i3+1]=c[1]; col[i3+2]=c[2];
+    pos[i*3]   = (Math.random()-.5)*120;
+    pos[i*3+1] = (Math.random()-.5)*80;
+    pos[i*3+2] = (Math.random()-.5)*60;
+    const c = pal[Math.floor(Math.random()*pal.length)];
+    col[i*3]=c[0]; col[i*3+1]=c[1]; col[i*3+2]=c[2];
   }
-  const geo=new THREE.BufferGeometry();
-  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
-  const mat=new THREE.PointsMaterial({size:.14,vertexColors:true,transparent:true,opacity:.65,blending:THREE.AdditiveBlending,depthWrite:false});
-  scene.add(new THREE.Points(geo,mat));
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+  pGeo.setAttribute('color', new THREE.BufferAttribute(col,3));
+  const pMat = new THREE.PointsMaterial({size:.18, vertexColors:true, transparent:true, opacity:.55});
+  scene.add(new THREE.Points(pGeo, pMat));
 
-  // shapes
-  const geos=[new THREE.OctahedronGeometry(1.1,0),new THREE.IcosahedronGeometry(.9,0),new THREE.TetrahedronGeometry(1,0)];
-  const scols=[0xE8922A,0x5DBF8A,0xC9A84C,0xD95F4B];
-  const meshes=[];
-  for(let i=0;i<10;i++){
-    const m=new THREE.Mesh(geos[i%3],new THREE.MeshBasicMaterial({color:scols[i%4],wireframe:true,transparent:true,opacity:.1+Math.random()*.08}));
-    m.position.set((Math.random()-.5)*50,(Math.random()-.5)*38,(Math.random()-.5)*18-8);
-    m.rotation.set(Math.random()*Math.PI*2,Math.random()*Math.PI*2,0);
-    meshes.push({m,rx:(Math.random()-.5)*.007,ry:(Math.random()-.5)*.006});
-    scene.add(m);
-  }
+  const shapes = [];
+  const geos = [
+    new THREE.OctahedronGeometry(2.5,0),
+    new THREE.IcosahedronGeometry(2,0),
+    new THREE.TetrahedronGeometry(2.8,0),
+    new THREE.OctahedronGeometry(1.8,0),
+    new THREE.IcosahedronGeometry(3,0),
+    new THREE.TetrahedronGeometry(2,0),
+    new THREE.OctahedronGeometry(2,0),
+    new THREE.IcosahedronGeometry(1.5,0),
+    new THREE.TetrahedronGeometry(3.2,0),
+    new THREE.OctahedronGeometry(1.5,0),
+  ];
+  geos.forEach((g,i)=>{
+    const c = pal[i%pal.length];
+    const mat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(c[0],c[1],c[2]),
+      wireframe:true, transparent:true,
+      opacity: .12+Math.random()*.12
+    });
+    const m = new THREE.Mesh(g, mat);
+    m.position.set((Math.random()-.5)*60,(Math.random()-.5)*40,(Math.random()-.5)*20);
+    m.userData = {
+      rx: (Math.random()-.5)*.004,
+      ry: (Math.random()-.5)*.006,
+      ox: m.position.x, oy: m.position.y
+    };
+    scene.add(m); shapes.push(m);
+  });
 
-  let mx=0,my=0,sy=0;
-  document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;});
-  window.addEventListener('scroll',()=>sy=scrollY);
+  let mx=0, my=0;
+  document.addEventListener('mousemove', e=>{
+    mx = (e.clientX/innerWidth-.5)*2;
+    my = (e.clientY/innerHeight-.5)*2;
+  });
 
-  const pts=scene.children[0];
-  const clk=new THREE.Clock();
-  function render(){
-    requestAnimationFrame(render);
-    const t=clk.getElapsedTime();
-    pts.rotation.y=t*.022; pts.rotation.x=t*.009;
-    cam.position.x+=(mx*2.5-cam.position.x)*.03;
-    cam.position.y+=(-my*1.8-cam.position.y)*.03;
-    cam.position.z=30+sy*.008;
-    cam.lookAt(scene.position);
-    meshes.forEach(({m,rx,ry})=>{m.rotation.x+=rx;m.rotation.y+=ry;});
-    renderer.render(scene,cam);
-  }
-  render();
   window.addEventListener('resize',()=>{
-    cam.aspect=innerWidth/innerHeight; cam.updateProjectionMatrix();
     renderer.setSize(innerWidth,innerHeight);
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
   });
-})();
 
-/* ── CSS PARTICLES ── */
-(function(){
-  const c=document.getElementById('pcont');
-  const cols=['rgba(232,146,42,','rgba(93,191,138,','rgba(201,168,76,','rgba(217,95,75,'];
-  for(let i=0;i<28;i++){
-    const p=document.createElement('div'); p.className='cp';
-    const s=2+Math.random()*4,col=cols[i%4],op=.2+Math.random()*.35;
-    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${col}${op});--dur:${15+Math.random()*22}s;--delay:-${Math.random()*18}s;--dx:${(Math.random()-.5)*70}px;--op:${op}`;
-    c.appendChild(p);
-  }
-})();
-
-/* ── CURSOR ── */
-(function(){
-  const cur=document.getElementById('cur'),ring=document.getElementById('curR');
-  let cx=0,cy=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{cx=e.clientX;cy=e.clientY;});
-  (function tick(){
-    cur.style.left=cx+'px'; cur.style.top=cy+'px';
-    rx+=(cx-rx)*.12; ry+=(cy-ry)*.12;
-    ring.style.left=rx+'px'; ring.style.top=ry+'px';
-    requestAnimationFrame(tick);
+  let t=0;
+  (function animate(){
+    requestAnimationFrame(animate);
+    t+=.008;
+    shapes.forEach(s=>{
+      s.rotation.x += s.userData.rx;
+      s.rotation.y += s.userData.ry;
+      s.position.x = s.userData.ox + Math.sin(t+s.userData.rx*100)*.8;
+      s.position.y = s.userData.oy + Math.cos(t+s.userData.ry*100)*.5;
+    });
+    camera.position.x += (mx*3 - camera.position.x)*.04;
+    camera.position.y += (-my*2 - camera.position.y)*.04;
+    camera.position.z = 30 - (window.scrollY||0)*0.003;
+    renderer.render(scene, camera);
   })();
-  document.querySelectorAll('a,button,.flip,.fi,.ev,.rcard,.qcard').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{
-      cur.style.cssText+='width:15px;height:15px;background:var(--saffron)';
-      ring.style.cssText+='width:52px;height:52px;border-color:rgba(232,146,42,.5)';
-    });
-    el.addEventListener('mouseleave',()=>{
-      cur.style.cssText+='width:9px;height:9px;background:var(--saffron)';
-      ring.style.cssText+='width:34px;height:34px;border-color:rgba(232,146,42,.45)';
-    });
-  });
 })();
 
-/* ── NAV ── */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40));
-
-/* ── HERO GSAP ── */
+// ── CUSTOM CURSOR ──
 (function(){
-  if(!window.gsap)return;
-  gsap.registerPlugin(ScrollTrigger);
-  // split h1 into words
-  const h1=document.getElementById('hH1');
-  h1.innerHTML=h1.innerHTML.replace(/([^\n<>]+)/g,m=>m.trim()?`<span class="hw" style="display:inline-block">${m}</span>`:m);
-  const tl=gsap.timeline({defaults:{ease:'power3.out'}});
-  tl.to('#hEye',{opacity:1,y:0,duration:.8,delay:.3})
-    .fromTo('.hw',{opacity:0,y:55,rotateX:-35},{opacity:1,y:0,rotateX:0,duration:.9,stagger:.07,ease:'back.out(1.5)'},'<.2')
-    .to('#hSub',{opacity:1,y:0,duration:.8},'<.5')
-    .to('#hBtns',{opacity:1,y:0,duration:.7},'<.2')
-    .to('#hNote',{opacity:1,duration:.6},'<.2')
-    .to('#hBadges',{opacity:1,y:0,duration:.7},'<.2');
-
-  // parallax
-  gsap.to('#hH1',{y:-70,scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
-  gsap.to('#hSub',{y:-44,scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:true}});
-
-  // quote cards stagger
-  gsap.utils.toArray('.qcard').forEach((el,i)=>
-    gsap.fromTo(el,{y:50,opacity:0},{y:0,opacity:1,duration:.75,delay:i*.08,
-      scrollTrigger:{trigger:el,start:'top 87%',toggleActions:'play none none none'}})
-  );
+  const dot = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  let rx=0, ry=0, tx=0, ty=0;
+  document.addEventListener('mousemove', e=>{
+    tx=e.clientX; ty=e.clientY;
+    dot.style.left=tx+'px'; dot.style.top=ty+'px';
+  });
+  function lerp(a,b,t){return a+(b-a)*t}
+  (function loop(){
+    rx=lerp(rx,tx,.12); ry=lerp(ry,ty,.12);
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.btn,.topic-card,.social-card,.how-step').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px'});
+    el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px'});
+  });
 })();
 
-/* ── SCROLL REVEAL ── */
-new IntersectionObserver((es)=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target);}});
-},{threshold:.1,rootMargin:'0px 0px -36px 0px'})
-.observe; // fix below
-const observer=new IntersectionObserver((es)=>{
-  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target);}});
-},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+// ── SCROLL REVEAL ──
+(function(){
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('visible')});
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+})();
 
-/* ── COUNT UP ── */
-const cObs=new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    if(!e.isIntersecting)return;
-    const el=e.target,tgt=+el.dataset.count,suf=el.dataset.suf||'+';
-    let v=0; const step=tgt/55;
-    const t=setInterval(()=>{v+=step;if(v>=tgt){v=tgt;clearInterval(t);}el.textContent=Math.floor(v)+suf;},16);
-    cObs.unobserve(el);
-  });
-},{threshold:.5});
-document.querySelectorAll('.sv[data-count]').forEach(el=>cObs.observe(el));
+// ── COUNT-UP ──
+(function(){
+  const nums = document.querySelectorAll('.stat-num[data-target]');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix||'';
+      let startTime=null;
+      const dur=1800;
+      (function step(ts){
+        if(!startTime) startTime=ts;
+        const p = Math.min((ts-startTime)/dur,1);
+        const ease = 1-Math.pow(1-p,3);
+        el.textContent = Math.round(ease*target)+suffix;
+        if(p<1) requestAnimationFrame(step);
+        else el.textContent = target+suffix;
+      })(performance.now());
+      obs.unobserve(el);
+    });
+  },{threshold:.5});
+  nums.forEach(n=>obs.observe(n));
+})();
+
+// ── NEWSPAPER PAGE TURN ──
+(function(){
+  const section = document.getElementById('newspaper');
+  const fill = document.getElementById('np-fill');
+  const pages = ['page-0','page-1','page-2','page-3'].map(id=>document.getElementById(id));
+  const PN = pages.length;
+
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+
+  function update(){
+    if(!section) return;
+    const rect = section.getBoundingClientRect();
+    const scrolled = -rect.top;
+    const maxScroll = section.offsetHeight - window.innerHeight;
+    const progress = clamp(scrolled/maxScroll, 0, 1);
+
+    if(fill) fill.style.width = (progress*100)+'%';
+
+    pages.forEach((page,i)=>{
+      if(!page) return;
+      const start = i/PN;
+      const end = (i+1)/PN;
+      const pp = clamp((progress-start)/(end-start), 0, 1);
+      // ease in-out cubic
+      const eased = pp<.5 ? 4*pp*pp*pp : 1-Math.pow(-2*pp+2,3)/2;
+      const angle = eased*180;
+      page.style.transform = 'rotateY('+(-angle)+'deg)';
+      const shadow = Math.sin(angle*Math.PI/180);
+      page.style.setProperty('--sh', shadow.toFixed(3));
+      page.style.zIndex = angle>90 ? (i+1) : (PN*2-i);
+    });
+  }
+
+  window.addEventListener('scroll', update, {passive:true});
+  update();
+})();
 </script>
 </body>
 </html>
