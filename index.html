@@ -245,49 +245,49 @@ nav.scrolled {
   gap: 14px;
   opacity: 0;
 }
-.hero-form {
+.hero-cta-btns {
   display: flex;
-  gap: 0;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 100px;
-  padding: 6px 6px 6px 24px;
-  backdrop-filter: blur(12px);
-  transition: border-color 0.3s, box-shadow 0.3s;
-  width: 440px;
-  max-width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-.hero-form:focus-within {
-  border-color: rgba(255,122,66,0.5);
-  box-shadow: 0 0 0 4px rgba(255,122,66,0.1);
-}
-.hero-form input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 14.5px;
-  min-width: 0;
-}
-.hero-form input::placeholder { color: var(--ink-faint); }
 .btn-primary {
-  padding: 11px 24px;
+  display: inline-block;
+  padding: 14px 30px;
   background: linear-gradient(135deg, var(--saffron), #ff9a6c);
   color: #040d14;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   border: none;
   border-radius: 100px;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s;
   letter-spacing: 0.3px;
 }
 .btn-primary:hover {
   transform: scale(1.04);
   box-shadow: 0 8px 28px rgba(255,122,66,0.5);
+}
+.btn-secondary {
+  display: inline-block;
+  padding: 14px 30px;
+  background: rgba(255,255,255,0.05);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  backdrop-filter: blur(8px);
+}
+.btn-secondary:hover {
+  border-color: rgba(0,119,181,0.5);
+  background: rgba(0,119,181,0.1);
+  transform: scale(1.02);
 }
 .hero-social-proof {
   font-size: 12px;
@@ -936,37 +936,17 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
 }
-.cta-form {
+.cta-link-btns {
   display: flex;
-  gap: 0;
-  background: rgba(4,13,20,0.8);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 100px;
-  padding: 7px 7px 7px 28px;
-  backdrop-filter: blur(20px);
-  width: 500px;
-  max-width: 100%;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-.cta-form:focus-within {
-  border-color: rgba(255,122,66,0.5);
-  box-shadow: 0 0 0 4px rgba(255,122,66,0.1), 0 20px 60px rgba(255,122,66,0.15);
-}
-.cta-form input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 15px;
-  min-width: 0;
-}
-.cta-form input::placeholder { color: rgba(120,170,184,0.5); }
 .btn-cta {
-  padding: 13px 30px;
+  display: inline-block;
+  padding: 14px 30px;
   background: linear-gradient(135deg, var(--saffron), #ff9a6c);
   color: #040d14;
   font-weight: 700;
@@ -975,12 +955,40 @@ section {
   border-radius: 100px;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s;
   font-family: var(--sans);
 }
 .btn-cta:hover {
   transform: scale(1.04);
   box-shadow: 0 8px 32px rgba(255,122,66,0.5);
+}
+.btn-cta-outline {
+  display: inline-block;
+  padding: 14px 28px;
+  background: rgba(0,119,181,0.08);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid rgba(0,119,181,0.3);
+  border-radius: 100px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  font-family: var(--sans);
+}
+.btn-cta-outline:hover {
+  border-color: rgba(0,119,181,0.6);
+  background: rgba(0,119,181,0.15);
+  transform: scale(1.02);
+}
+.btn-cta-outline.ig {
+  background: rgba(225,48,108,0.06);
+  border-color: rgba(225,48,108,0.25);
+}
+.btn-cta-outline.ig:hover {
+  border-color: rgba(225,48,108,0.5);
+  background: rgba(225,48,108,0.12);
 }
 
 .cta-features {
@@ -1012,22 +1020,6 @@ section {
   flex-shrink: 0;
 }
 
-/* ── SUCCESS STATE ── */
-.success-msg {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 20px 32px;
-  background: rgba(68,232,160,0.08);
-  border: 1px solid rgba(68,232,160,0.3);
-  border-radius: 16px;
-  font-size: 15px;
-  color: var(--green);
-}
-.success-msg .s-icon { font-size: 32px; }
-.success-msg .s-title { font-weight: 700; font-size: 18px; }
-.success-msg .s-text { font-size: 14px; color: var(--ink-dim); }
 
 /* ── SOCIAL PROOF / LINKS ── */
 #links { padding: 80px 0; }
@@ -1224,9 +1216,9 @@ footer {
     </div>
   </a>
   <div class="nav-cta">
-    <a class="nav-link" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Today's Edition</a>
     <a class="nav-link" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">LinkedIn</a>
-    <a class="btn-nav" href="#subscribe">Subscribe Free →</a>
+    <a class="nav-link" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Instagram</a>
+    <a class="btn-nav" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Read Today's Edition →</a>
   </div>
 </nav>
 
@@ -1250,16 +1242,11 @@ footer {
   </p>
 
   <div class="hero-form-wrap" id="heroForm">
-    <form class="hero-form" id="heroSubscribeForm" onsubmit="handleSubscribe(event, 'heroSubscribeForm', 'heroSuccess')">
-      <input type="email" placeholder="your@email.com" required autocomplete="email">
-      <button class="btn-primary" type="submit">Subscribe Free</button>
-    </form>
-    <div class="success-msg" id="heroSuccess">
-      <span class="s-icon">🎉</span>
-      <span class="s-title">You're in!</span>
-      <span class="s-text">Check your inbox for the welcome brief.</span>
+    <div class="hero-cta-btns">
+      <a class="btn-primary" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Read Today's Edition →</a>
+      <a class="btn-secondary" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">Follow on LinkedIn</a>
     </div>
-    <p class="hero-social-proof"><span>Free forever.</span> No spam. Unsubscribe anytime.</p>
+    <p class="hero-social-proof">New edition drops every morning. <span>Free forever.</span></p>
   </div>
 
   <div class="hero-badges" id="heroBadges">
@@ -1567,18 +1554,18 @@ footer {
     <div class="steps-wrap">
       <div class="step reveal">
         <div class="step-num">1</div>
-        <h3>Subscribe Free</h3>
-        <p>Enter your email. That's it. No credit card, no trial period, no catch.</p>
+        <h3>Follow Us</h3>
+        <p>Follow MBA India Daily on LinkedIn or Instagram — each new edition is shared there every morning.</p>
       </div>
       <div class="step reveal" style="animation-delay:0.15s">
         <div class="step-num">2</div>
-        <h3>Read Every Morning</h3>
-        <p>A fresh intelligence briefing lands in your inbox before your first class or meeting.</p>
+        <h3>Click the Link</h3>
+        <p>We drop a unique link with every post. One tap opens the full daily intelligence briefing.</p>
       </div>
       <div class="step reveal" style="animation-delay:0.3s">
         <div class="step-num">3</div>
         <h3>Think Differently</h3>
-        <p>Start connecting dots others miss. Build the mental models that make managers extraordinary.</p>
+        <p>Start connecting dots others miss. Build the mental models that separate good managers from great ones.</p>
       </div>
     </div>
   </div>
@@ -1614,7 +1601,7 @@ footer {
   </div>
 </section>
 
-<!-- ── SUBSCRIBE CTA ── -->
+<!-- ── CTA ── -->
 <section id="subscribe">
   <div class="wrap">
     <div class="cta-box reveal">
@@ -1623,23 +1610,19 @@ footer {
         The market doesn't wait.<br><span class="grad-text">Neither should you.</span>
       </h2>
       <p class="cta-sub">
-        Join MBA students and business professionals who start every morning with India's sharpest business briefing.
+        Follow us on LinkedIn or Instagram to get notified when each new edition drops — every morning, free.
       </p>
       <div class="cta-form-wrap">
-        <form class="cta-form" id="ctaSubscribeForm" onsubmit="handleSubscribe(event, 'ctaSubscribeForm', 'ctaSuccess')">
-          <input type="email" placeholder="Enter your email address" required autocomplete="email">
-          <button class="btn-cta" type="submit">Get Free Access →</button>
-        </form>
-        <div class="success-msg" id="ctaSuccess">
-          <span class="s-icon">🎉</span>
-          <span class="s-title">Welcome to MBA India Daily!</span>
-          <span class="s-text">Your first edition arrives tomorrow morning. Check your inbox.</span>
+        <div class="cta-link-btns">
+          <a class="btn-cta" href="https://mbaindiadailyblog.vercel.app/" target="_blank" rel="noopener">Read Today's Edition →</a>
+          <a class="btn-cta-outline" href="https://www.linkedin.com/company/mbaindiadaily/" target="_blank" rel="noopener">Follow on LinkedIn</a>
+          <a class="btn-cta-outline ig" href="https://www.instagram.com/mbaindiadaily?igsh=MW5taHl1eGRlN2U0Mw==" target="_blank" rel="noopener">Follow on Instagram</a>
         </div>
         <div class="cta-features">
           <span class="cta-feat">Free forever</span>
-          <span class="cta-feat">No spam, ever</span>
-          <span class="cta-feat">Unsubscribe anytime</span>
-          <span class="cta-feat">Daily delivery</span>
+          <span class="cta-feat">New edition every morning</span>
+          <span class="cta-feat">No sign-up needed</span>
+          <span class="cta-feat">Just follow &amp; read</span>
         </div>
       </div>
     </div>
@@ -1975,19 +1958,6 @@ footer {
   statVals.forEach(el => observer.observe(el));
 })();
 
-// ── SUBSCRIBE HANDLER ──
-function handleSubscribe(e, formId, successId) {
-  e.preventDefault();
-  const form = document.getElementById(formId);
-  const success = document.getElementById(successId);
-  const btn = form.querySelector('button');
-  btn.textContent = 'Subscribing...';
-  btn.disabled = true;
-  setTimeout(() => {
-    form.style.display = 'none';
-    success.style.display = 'flex';
-  }, 900);
-}
 
 // ── GSAP SCROLL PARALLAX ──
 (function() {
